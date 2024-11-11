@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Rule Management</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/general.css">
+    <link rel="stylesheet" href="./assets/css/rule_management.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <div class="app-header header-shadow bg-night-sky header-text-light">
+            <div class="app-header__logo">
+                <div class="logo-src"></div>
+                <div class="header__pane ml-auto">
+                    <div>
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                            data-class="closed-sidebar">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button"
+                        class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>
+            <div class="app-header__content">
+                <div class="app-header-left">
+                    <ul class="header-menu nav">
+                        <li class="nav-item">
+                            <a href="rule_management.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-shield"> </i>
+                                Rule Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rule_results.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-news-paper"> </i>
+                                Rule Results
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rule_library.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-box2"> </i>
+                                Rule Library
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rule_inheritance.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-shuffle"> </i>
+                                Rule Inheritance
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="action_management.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-gleam"> </i>
+                                Action Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="configuration.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-config"> </i>
+                                Configuration Backend
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="app-header-right">
+                    <div class="header-btn-lg pr-0">
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="btn-group">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            class="p-0 btn">
+                                            <img width="42" class="rounded-circle" src="./assets/images/avatars/1.jpg"
+                                                alt="">
+                                            <i class="fa fa-angle-down ml-2 opacity-8"></i>
+                                        </a>
+                                        <div tabindex="-1" role="menu" aria-hidden="true"
+                                            class="dropdown-menu dropdown-menu-right">
+                                            <button type="button" tabindex="0" class="dropdown-item">User
+                                                Account</button>
+                                            <button type="button" tabindex="0" class="dropdown-item">Settings</button>
+                                            <h6 tabindex="-1" class="dropdown-header">Header</h6>
+                                            <button type="button" tabindex="0" class="dropdown-item">Actions</button>
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+                                            <button type="button" tabindex="0" class="dropdown-item">Dividers</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-content-left  ml-3 header-user-info">
+                                    <div class="widget-heading">
+                                        Alina Mclourd
+                                    </div>
+                                    <div class="widget-subheading">
+                                        VP People Manager
+                                    </div>
+                                </div>
+                                <div class="widget-content-right header-user-info ml-3">
+                                    <button type="button"
+                                        class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
+                                        <i class="fa text-white fa-calendar pr-1 pl-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-main">
+            <div class="app-sidebar sidebar-shadow">
+                <div class="app-header__logo">
+                    <div class="logo-src"></div>
+                    <div class="header__pane ml-auto">
+                        <div>
+                            <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                                data-class="closed-sidebar">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-header__mobile-menu">
+                    <div>
+                        <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="app-header__menu">
+                    <span>
+                        <button type="button"
+                            class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                            <span class="btn-icon-wrapper">
+                                <i class="fa fa-ellipsis-v fa-w-6"></i>
+                            </span>
+                        </button>
+                    </span>
+                </div>
+                <div class="scrollbar-sidebar sidebar-scroller">
+                    <div class="app-sidebar__inner">
+                        <ul class="vertical-nav-menu">
+                            <li class="app-sidebar__heading">Main</li>
+                            <li>
+                                <a href="rule_management.html" class="mm-active">
+                                    <i class="metismenu-icon pe-7s-shield"></i>
+                                    Rule Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="rule_results.html">
+                                    <i class="metismenu-icon pe-7s-news-paper"></i>
+                                    Rule Results
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="metismenu-icon pe-7s-plus"></i>
+                                    Rule Creation
+                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="sqli_rule_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            SQL Injection (SQLi)
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="xss_rule_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            Cross Site Scripting (XSS)
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="app-sidebar__heading">Public</li>
+                            <li>
+                                <a href="rule_library.html">
+                                    <i class="metismenu-icon pe-7s-box2"></i>
+                                    Rule Library
+                                </a>
+                            </li>
+                            <li>
+                                <a href="rule_inheritance.html">
+                                    <i class="metismenu-icon pe-7s-shuffle"></i>
+                                    Rule Inheritance
+                                </a>
+                            </li>
+                            <li class="app-sidebar__heading">Target</li>
+                            <li>
+                                <a href="action_management.html">
+                                    <i class="metismenu-icon pe-7s-gleam"></i>
+                                    Action Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="metismenu-icon pe-7s-rocket"></i>
+                                    Action Initiation
+                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="webhook_action_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            Webhook
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="app-sidebar__heading">Setup</li>
+                            <li>
+                                <a href="configuration.html">
+                                    <i class="metismenu-icon pe-7s-config"></i>
+                                    Configuration Backend
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    <div class="app-page-title">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-heading">
+                                <div class="page-title-icon">
+                                    <i class="pe-7s-shield icon-gradient bg-ripe-malin"></i>
+                                </div>
+                                <div>Rule Management
+                                    <div class="page-title-subheading">
+                                        Rule management page for different objects
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input placeholder="Rule Name" type="text" class="mb-2 form-control-lg form-control" id="ruleName">
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="mb-2 form-control-lg form-control" id="ruleType">
+                                        <option value="null">-----</option>
+                                        <option value="SQLI">SQL Injection (SQLI)</option>
+                                        <option value="XSS">Cross Site Scripting (XSS)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="main-card mb-3 card" id="cardOfSQLI">
+                        <div class="card-body"><h1 class="card-title real-header">SQL Injection (SQLI)</h1>
+                            <div id="ruleManagementOfSQLI" class="text-center table-responsive"></div>
+                        </div>
+                    </div>
+                    <div class="main-card mb-3 card" id="cardOfXSS">
+                        <div class="card-body"><h1 class="card-title real-header">Cross Site Scripting (XSS)</h1>
+                            <div id="ruleManagementOfXSS" class="text-center table-responsive"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./assets/scripts/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="module" src="./assets/scripts/rule_management.js"></script>
+    <script>
+        function getSQLIRuleDetails(get) {
+            const id = get.getAttribute('data-id')
+            document.getElementById('updateButton').setAttribute('data-type', 'SQLI')
+            document.getElementById('updateButton').setAttribute('data-id', id)
+            callAPI(
+                'GET',
+                '/api/sqlis/show/' + id,
+                function () {
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    const responseText = JSON.parse(event.responseText)
+                    $('#ruleDetailsModalTitle').empty().append('SQL Injection Rule ID: #' + responseText.data.id)
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <form id="sqlInjectionRuleUpdateForm">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="ruleName" class="">Rule Name</label>
+                                        <input name="ruleName" id="ruleName" placeholder="Rule Name" type="text" class="form-control" value="${responseText.data.rule_name}">
+                                        <div id="ruleNameErrorField"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label class="">Is Enabled</label>
+                                        <fieldset class="position-relative form-group">
+                                            <div class="position-relative form-check">
+                                                <label class="form-check-label">
+                                                    <input name="isEnabled" type="radio" class="form-check-input" value="true" id="isEnabledTrue">Yes (In case, create this rule and start to use it [Default])
+                                                </label>
+                                            </div>
+                                            <div class="position-relative form-check">
+                                                <label class="form-check-label">
+                                                    <input name="isEnabled" type="radio" class="form-check-input" value="false" id="isEnabledFalse">No (In case, create but it just recieve request and not do anything)
+                                                </label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="targetField" class="">Target Field</label>
+                                <textarea rows="4" name="targetField" id="targetField" class="form-control" placeholder="Example: request.body, [request.body, request.headers]">${responseText.data.target_field}</textarea>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="ipRootCauseField" class="">IP Root Cause Field</label>
+                                <textarea rows="2" name="ipRootCauseField" id="ipRootCauseField" class="form-control" placeholder="Example: client.ip">${responseText.data.ip_root_cause_field}</textarea>
+                                <div id="ipRootCauseFieldErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="regexMatcher" class="">Regex Matcher</label>
+                                <textarea rows="2" name="regexMatcher" id="regexMatcher" class="form-control" placeholder="Example: (?i)\b(OR|AND)\s+\d+=\d+">${responseText.data.regex_matcher}</textarea>
+                                <div id="regexMatcherErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="ruleLibrary" class="">Rule Library</label>
+                                <div id="ruleLibraryField">
+                                </div>
+                                <div id="ruleLibraryErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="action" class="">Action</label>
+                                <div id="actionField">
+                                </div>
+                            </div>
+                        </form>
+                    `)
+                    if (responseText.data.is_enabled == true) {
+                        $('#isEnabledTrue').prop("checked", true)
+                    }
+                    else {
+                        $("#isEnabledFalse").prop("checked", true);
+                    }
+                    $('#ruleLibraryField').empty().append(`
+                        <select name="ruleLibrary" id="ruleLibrary" class="form-control">
+                        </select>
+                    `)
+                    $('#actionField').empty().append(`
+                        <select name="action" id="action" class="form-control">
+                        </select>
+                    `)
+                    let ruleLibrary = ['not_used']
+                    let action = ['not_used']
+                    for (let index = 0; index < responseText.data.rule_library.rules.length; index++) {
+                        const element = responseText.data.rule_library.rules[index];
+                        ruleLibrary.push(element)
+                    }
+                    for (let index = 0; index < responseText.data.action_id.actions.length; index++) {
+                        const element = responseText.data.action_id.actions[index];
+                        action.push(element)
+                    }
+                    for (let index = 0; index < ruleLibrary.length; index++) {
+                        const element = ruleLibrary[index];
+                        if (element == responseText.data.rule_library.choice) {
+                            $('#ruleLibrary').append(`
+                                <option value="${element}" selected>${element}</option>
+                            `)
+                        }
+                        else {
+                            $('#ruleLibrary').append(`
+                                <option value="${element}">${element}</option>
+                            `)
+                        }
+                    }
+                    for (let index = 0; index < action.length; index++) {
+                        const element = action[index];
+                        if (element == responseText.data.action_id.choice) {
+                            $('#action').append(`
+                                <option value="${element}" selected>${element}</option>
+                            `)
+                        }
+                        else {
+                            $('#action').append(`
+                                <option value="${element}">${element}</option>
+                            `)
+                        }
+                    }
+                },
+                function () {
+                    notificator('Error', 'Can\'t fetch rule details of SQLI', 'error')
+                    $('#ruleDetailsModalBody').empty();
+                }
+            )
+        }
+
+        function getXSSRuleDetails(get) {
+            const id = get.getAttribute('data-id')
+            document.getElementById('updateButton').setAttribute('data-type', 'XSS')
+            document.getElementById('updateButton').setAttribute('data-id', id)
+            callAPI(
+                'GET',
+                '/api/xsss/show/' + id,
+                function () {
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    const responseText = JSON.parse(event.responseText)
+                    $('#ruleDetailsModalTitle').empty().append('Cross Site Scripting Rule ID: #' + responseText.data.id)
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <form id="crossSiteScriptingRuleUpdateForm">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="ruleName" class="">Rule Name</label>
+                                        <input name="ruleName" id="ruleName" placeholder="Rule Name" type="text" class="form-control" value="${responseText.data.rule_name}">
+                                        <div id="ruleNameErrorField"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label class="">Is Enabled</label>
+                                        <fieldset class="position-relative form-group">
+                                            <div class="position-relative form-check">
+                                                <label class="form-check-label">
+                                                    <input name="isEnabled" type="radio" class="form-check-input" value="true" id="isEnabledTrue">Yes (In case, create this rule and start to use it [Default])
+                                                </label>
+                                            </div>
+                                            <div class="position-relative form-check">
+                                                <label class="form-check-label">
+                                                    <input name="isEnabled" type="radio" class="form-check-input" value="false" id="isEnabledFalse">No (In case, create but it just recieve request and not do anything)
+                                                </label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="targetField" class="">Target Field</label>
+                                <textarea rows="4" name="targetField" id="targetField" class="form-control" placeholder="Example: request.body, [request.body, request.headers]">${responseText.data.target_field}</textarea>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="ipRootCauseField" class="">IP Root Cause Field</label>
+                                <textarea rows="2" name="ipRootCauseField" id="ipRootCauseField" class="form-control" placeholder="Example: client.ip">${responseText.data.ip_root_cause_field}</textarea>
+                                <div id="ipRootCauseFieldErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="regexMatcher" class="">Regex Matcher</label>
+                                <textarea rows="2" name="regexMatcher" id="regexMatcher" class="form-control" placeholder="Example: <script>|<img.*onerror">${responseText.data.regex_matcher}</textarea>
+                                <div id="regexMatcherErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="ruleLibrary" class="">Rule Library</label>
+                                <div id="ruleLibraryField">
+                                </div>
+                                <div id="ruleLibraryErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="action" class="">Action</label>
+                                <div id="actionField">
+                                </div>
+                            </div>
+                        </form>
+                    `)
+                    if (responseText.data.is_enabled == true) {
+                        $('#isEnabledTrue').prop("checked", true)
+                    }
+                    else {
+                        $("#isEnabledFalse").prop("checked", true);
+                    }
+                    $('#ruleLibraryField').empty().append(`
+                        <select name="ruleLibrary" id="ruleLibrary" class="form-control">
+                        </select>
+                    `)
+                    $('#actionField').empty().append(`
+                        <select name="action" id="action" class="form-control">
+                        </select>
+                    `)
+                    let ruleLibrary = ['not_used']
+                    let action = ['not_used']
+                    for (let index = 0; index < responseText.data.rule_library.rules.length; index++) {
+                        const element = responseText.data.rule_library.rules[index];
+                        ruleLibrary.push(element)
+                    }
+                    for (let index = 0; index < responseText.data.action_id.actions.length; index++) {
+                        const element = responseText.data.action_id.actions[index];
+                        action.push(element)
+                    }
+                    for (let index = 0; index < ruleLibrary.length; index++) {
+                        const element = ruleLibrary[index];
+                        if (element == responseText.data.rule_library.choice) {
+                            $('#ruleLibrary').append(`
+                                <option value="${element}" selected>${element}</option>
+                            `)
+                        }
+                        else {
+                            $('#ruleLibrary').append(`
+                                <option value="${element}">${element}</option>
+                            `)
+                        }
+                    }
+                    for (let index = 0; index < action.length; index++) {
+                        const element = action[index];
+                        if (element == responseText.data.action_id.choice) {
+                            $('#action').append(`
+                                <option value="${element}" selected>${element}</option>
+                            `)
+                        }
+                        else {
+                            $('#action').append(`
+                                <option value="${element}">${element}</option>
+                            `)
+                        }
+                    }
+                },
+                function () {
+                    notificator('Error', 'Can\'t fetch rule details of XSS', 'error')
+                    $('#ruleDetailsModalBody').empty();
+                }
+            )
+        }
+
+        function deleteSQLIRule(get) {
+            const id = get.getAttribute('data-id')
+            const ruleName = get.getAttribute('data-rule-name')
+            document.getElementById('removeButton').setAttribute('data-type', 'SQLI')
+            document.getElementById('removeButton').setAttribute('data-id', id)
+            $('#ruleDeleteModalBody').empty().append(`<p>Do you really want to delete ${ruleName}?</p>`)
+        }
+
+        function deleteXSSRule(get) {
+            const id = get.getAttribute('data-id')
+            const ruleName = get.getAttribute('data-rule-name')
+            document.getElementById('removeButton').setAttribute('data-type', 'XSS')
+            document.getElementById('removeButton').setAttribute('data-id', id)
+            $('#ruleDeleteModalBody').empty().append(`<p>Do you really want to delete ${ruleName}?</p>`)
+        }
+
+        function callAPI(method, endpoint, onLoading, onSuccess, onError, body = null) {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 0 || this.readyState == 1 || this.readyState == 2 || this.readyState == 3) {
+                    onLoading()
+                }
+                else if (this.readyState == 4 && this.status == 200) {
+                    onSuccess(this)
+                }
+                else if (this.status != 200) {
+                    onError(this)
+                }
+            }
+            xhr.open(method, getCookie('backendAPI') + endpoint);
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            if (body == null) {
+                xhr.send();
+            }
+            else {
+                xhr.send(body);
+            }
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "="
+            const cookiesArray = document.cookie.split(';')
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i]
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1, cookie.length)
+                }
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length))
+                }
+            }
+            return null;
+        }
+
+        function notificator(title, message, type) {
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.options.timeOut = 5000;
+            toastr.options.showMethod = 'slideDown';
+            toastr.options.hideMethod = 'slideUp';
+            toastr.options.preventDuplicates = true;
+            if (type == 'info') {
+                toastr.info(message, title);
+            }
+            if (type == 'success') {
+                toastr.success(message, title);
+            }
+            if (type == 'warning') {
+                toastr.warning(message, title);
+            }
+            if (type == 'error') {
+                toastr.error(message, title);
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ruleDetailsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ruleDetailsModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ruleDetailsModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ruleDetailsModalCloseButton">Close</button>
+                <button type="button" class="btn btn-primary" id="updateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ruleDeleteModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ruleDeleteModalTitle">Remove Rule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ruleDeleteModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ruleDeleteModalCloseButton">Close</button>
+                <button type="button" class="btn btn-danger" id="removeButton">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
