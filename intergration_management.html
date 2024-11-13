@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Webhook Action Creation</title>
+    <title>Intergration Management</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
@@ -162,7 +162,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" aria-expanded="true">
+                                <a href="#">
                                     <i class="metismenu-icon pe-7s-plus"></i>
                                     Rule Creation
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -203,7 +203,7 @@
                             </li>
                             <li class="app-sidebar__heading">Outside</li>
                             <li>
-                                <a href="intergration_management.html">
+                                <a href="intergration_management.html" class="mm-active">
                                     <i class="metismenu-icon pe-7s-share"></i>
                                     Intergration Management
                                 </a>
@@ -230,7 +230,7 @@
                                     Action Management
                                 </a>
                             </li>
-                            <li class="mm-active">
+                            <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-rocket"></i>
                                     Action Initiation
@@ -238,7 +238,7 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="webhook_action_creation.html" class="mm-active">
+                                        <a href="webhook_action_creation.html">
                                             <i class="metismenu-icon"></i>
                                             Webhook
                                         </a>
@@ -262,56 +262,29 @@
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    <i class="pe-7s-global icon-gradient bg-ripe-malin"></i>
+                                    <i class="pe-7s-share icon-gradient bg-ripe-malin"></i>
                                 </div>
-                                <div>Webhook Action Creation
+                                <div>Intergration Management
                                     <div class="page-title-subheading">
-                                        Create your Webhook to perform action
+                                        Manage all of Third Party rules
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="main-card mb-3 card">
-                                <div class="card-body"><h1 class="card-title medium-header">Webhook Action Creation Form</h1>
-                                    <hr>
-                                    <form id="webhookActionCreationForm">
-                                        <div class="position-relative form-group">
-                                            <label for="actionName" class="">Action Name</label>
-                                            <input name="actionName" id="actionName" placeholder="Action Name" type="text" class="form-control" autofocus>
-                                            <div id="actionNameErrorField"></div>
-                                        </div>
-                                        <div class="position-relative form-group">
-                                            <label for="actionConfiguration" class="">Action Configuration</label>
-                                            <textarea rows="8" name="actionConfiguration" id="actionConfiguration" class="form-control">{
-    "url": "http://localhost:8080",
-    "type": "default",
-    "body": {
-        "message": "Just a demo of 'body' field"
-    },
-    "method": "GET"
-}</textarea>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-md-10"></div>
-                                            <div class="col-md-2">
-                                                <button class="mb-2 mr-2 btn btn-primary btn-block" id="actionCreationButton">
-                                                    Create
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                    <div class="row mb-4">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <select class="mb-2 form-control-lg form-control" id="intergrationType">
+                                <option value="null">-----</option>
+                                <option value="YARA">YARA</option>
+                            </select>
                         </div>
-                        <div class="col-md-6">
-                            <div class="main-card mb-3 card">
-                                <div class="card-body"><h1 class="card-title medium-header">JSON Preview</h1>
-                                    <pre id="jsonPreview" class="clear-text">{}</pre>
-                                </div>
-                            </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="main-card mb-3 card" id="cardOfYARA">
+                        <div class="card-body"><h1 class="card-title real-header">YARA Rules</h1>
+                            <div id="ruleManagementOfYARA" class="text-center table-responsive"></div>
                         </div>
                     </div>
                 </div>
@@ -321,7 +294,7 @@
     <script type="text/javascript" src="./assets/scripts/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="module" src="./assets/scripts/webhook_action_creation.js"></script>
+    <script type="module" src="./assets/scripts/intergration_management.js"></script>
 </body>
 
 </html>

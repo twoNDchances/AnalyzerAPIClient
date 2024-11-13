@@ -41,3 +41,23 @@
 .sidebar-scroller {
         overflow: auto;
 }
+
+.real-header {
+        font-size: x-large;
+}
+
+.clear-text {
+        font-size: large;
+}
+
+.error-text {
+        color: red;
+}
+
+.size-adjustment {
+        width: 200px;
+}
+
+.size-appendix {
+        width: 100px;
+}

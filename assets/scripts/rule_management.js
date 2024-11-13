@@ -157,8 +157,89 @@ $(document).ready(function () {
             }
         }
     )
+    // Fetch FU
+    fetchData(
+        '/api/fus/list',
+        'GET',
+        null,
+        function() {
+            $('#ruleManagementOfFU').empty().append(`
+                <div class="small-item-center">
+                    <div class="loader"></div>
+                </div>
+            `)
+        },
+        function (responseData) {
+            $('#ruleManagementOfFU').empty().append(`
+                <table class="mb-0 table table-striped ruleManagementTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Rule Name</th>
+                            <th>Is Enabled</th>
+                            <th>Target Field</th>
+                            <th>IP Root Cause Field</th>
+                            <th>Regex Matcher</th>
+                            <th>Rule Library</th>
+                            <th>YARA Rule Intergration</th>
+                            <th>VirusTotal API Key</th>
+                            <th>Action</th>
+                            <th>View Details</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ruleManagementTableOfFU">
+                    </tbody>
+                </table>
+            `)
+            for (let index = 0; index < responseData.data.length; index++) {
+                const element = responseData.data[index];
+                $('#ruleManagementTableOfFU').append(`
+                    <tr id="ruleManagementTableOfFU_${element.id}">
+                        <th>${element.id}</th>
+                        <td>${element.rule_name}</td>
+                        <td>${element.is_enabled}</td>
+                        <td>${element.target_field}</td>
+                        <td>${element.ip_root_cause_field}</td>
+                        <td>${element.regex_matcher}</td>
+                        <td>${element.rule_library}</td>
+                        <td>${element.yara_rule_intergration}</td>
+                        <td>${element.virus_total_api_key}</td>
+                        <td>${element.action_id}</td>
+                        <td>
+                            <button class="mb-2 mr-2 btn btn-light">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="mb-2 mr-2 btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `)
+            }
+        },
+        function (status, errorMessage) {
+            if (status == 404) {
+                $('#ruleManagementOfFU').empty().append(`
+                    <div class="item-center">
+                        <p>Empty</p>
+                    </div>
+                `)
+            }
+            else {
+                notificator('Error', 'Can\'t fetch rules from Analyzer backend', 'error')
+                $('#ruleManagementOfFU').empty().append(`
+                    <div class="item-center">
+                        <p>Error</p>
+                    </div>
+                `)
+            }
+        }
+    )
     $('#ruleType').on('change', function () {
-        const ruleTypeList = ['SQLI', 'XSS']
+        const ruleTypeList = ['SQLI', 'XSS', 'FU']
         for (let index = 0; index < ruleTypeList.length; index++) {
             const element = ruleTypeList[index];
             if ($('#ruleType').val() == 'null') {

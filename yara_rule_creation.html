@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Webhook Action Creation</title>
+    <title>YARA Rule Creation</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
@@ -162,7 +162,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" aria-expanded="true">
+                                <a href="#">
                                     <i class="metismenu-icon pe-7s-plus"></i>
                                     Rule Creation
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -208,7 +208,7 @@
                                     Intergration Management
                                 </a>
                             </li>
-                            <li>
+                            <li class="mm-active">
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-plugin"></i>
                                     Intergration Creation
@@ -216,7 +216,7 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="yara_rule_creation.html">
+                                        <a href="yara_rule_creation.html" class="mm-active">
                                             <i class="metismenu-icon"></i>
                                             YARA Rule
                                         </a>
@@ -230,7 +230,7 @@
                                     Action Management
                                 </a>
                             </li>
-                            <li class="mm-active">
+                            <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-rocket"></i>
                                     Action Initiation
@@ -238,7 +238,7 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="webhook_action_creation.html" class="mm-active">
+                                        <a href="webhook_action_creation.html">
                                             <i class="metismenu-icon"></i>
                                             Webhook
                                         </a>
@@ -262,54 +262,46 @@
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    <i class="pe-7s-global icon-gradient bg-ripe-malin"></i>
+                                    <i class="pe-7s-look icon-gradient bg-ripe-malin"></i>
                                 </div>
-                                <div>Webhook Action Creation
+                                <div>YARA Rule Creation
                                     <div class="page-title-subheading">
-                                        Create your Webhook to perform action
+                                        Create YARA Rule for analyze malicious patterns
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="main-card mb-3 card">
-                                <div class="card-body"><h1 class="card-title medium-header">Webhook Action Creation Form</h1>
-                                    <hr>
-                                    <form id="webhookActionCreationForm">
-                                        <div class="position-relative form-group">
-                                            <label for="actionName" class="">Action Name</label>
-                                            <input name="actionName" id="actionName" placeholder="Action Name" type="text" class="form-control" autofocus>
-                                            <div id="actionNameErrorField"></div>
-                                        </div>
-                                        <div class="position-relative form-group">
-                                            <label for="actionConfiguration" class="">Action Configuration</label>
-                                            <textarea rows="8" name="actionConfiguration" id="actionConfiguration" class="form-control">{
-    "url": "http://localhost:8080",
-    "type": "default",
-    "body": {
-        "message": "Just a demo of 'body' field"
-    },
-    "method": "GET"
-}</textarea>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-md-10"></div>
-                                            <div class="col-md-2">
-                                                <button class="mb-2 mr-2 btn btn-primary btn-block" id="actionCreationButton">
-                                                    Create
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body">
+                                        <h1 class="card-title medium-header">YARA Rule Paste Field</h1>
+                                        <hr>
+                                        <textarea id="yaraRulePasteField" class="form-control" placeholder="Paste your YARA Rule here" rows="20"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="main-card mb-3 card">
-                                <div class="card-body"><h1 class="card-title medium-header">JSON Preview</h1>
-                                    <pre id="jsonPreview" class="clear-text">{}</pre>
+                            <div class="col-md-8">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body">
+                                        <h1 class="card-title medium-header">YARA Rule Creation Form</h1>
+                                        <hr>
+                                        <form id="yaraRuleCreationForm">
+                                            <div id="yaraRuleAndYaraDescription">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10"></div>
+                                                <div class="col-md-2 text-right">
+                                                    <button class="btn btn-light" type="button" id="addFieldButton">Add field</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <button class="mt-4 btn btn-lg btn-primary" id="yaraRuleCreationButton">
+                                            Create
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -321,7 +313,7 @@
     <script type="text/javascript" src="./assets/scripts/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="module" src="./assets/scripts/webhook_action_creation.js"></script>
+    <script type="module" src="./assets/scripts/yara_rule_creation.js"></script>
 </body>
 
 </html>

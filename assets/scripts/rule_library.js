@@ -27,6 +27,9 @@ $(document).ready(function () {
                 else if (element == 'XSS') {
                     $('#ruleType').append(`<option value="${element}">Cross Site Scripting (XSS)</option>`)
                 }
+                else if (element == 'FU') {
+                    $('#ruleType').append(`<option value="${element}">File Upload (FU)</option>`)
+                }
                 else {
                     $('#ruleType').append(`<option value="${element}">${element}</option>`)
                 }
@@ -73,12 +76,18 @@ $(document).ready(function () {
                     <div class="loader"></div>
                 </div>
             `)
+            $('#FU').empty().append(`
+                <div class="small-item-center">
+                    <div class="loader"></div>
+                </div>
+            `)
         },
         function (response) {
             console.log(response);
             
             let sqliCounter = 0;
             let xssCounter = 0;
+            let fuCounter = 0;
             let otherRuleType = []
             for (let index = 0; index < response.data.length; index++) {
                 const element = response.data[index];
@@ -87,6 +96,9 @@ $(document).ready(function () {
                 }
                 else if (element.rule_type == 'XSS') {
                     xssCounter++
+                }
+                else if (element.rule_type == 'FU') {
+                    fuCounter++
                 }
                 else {
                     otherRuleType.push(element.rule_type)
@@ -204,6 +216,43 @@ $(document).ready(function () {
                     }
                 }
             }
+
+            if (fuCounter == 0) {
+                $('#FU').empty().append(`
+                    <div class="item-center">
+                        <p>Empty</p>
+                    </div>
+                `)
+            }
+            else {
+                $('#FU').empty().append(`
+                    <table class="mb-0 table table-striped ruleLibraryTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Rule Type</th>
+                                <th>Rule Execution</th>
+                                <th>Rule Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ruleLibraryTableOfFU">
+                        </tbody>
+                    </table>
+                `)
+                for (let index = 0; index < response.data.length; index++) {
+                    const element = response.data[index];
+                    if (element.rule_type == 'FU') {
+                        $('#ruleLibraryTableOfFU').append(`
+                            <tr id="ruleManagementRowOfFU_${element.id}">
+                                <th class="text-center">${element.id}</th>
+                                <td class="text-center">${element.rule_type}</td>
+                                <td>${element.rule_execution}</td>
+                                <td>${element.rule_description}</td>
+                            </tr>
+                        `)
+                    }
+                }
+            }
         },
         function (status, errorMessage) {
             console.log(errorMessage);
@@ -214,10 +263,32 @@ $(document).ready(function () {
                         <p>Empty</p>
                     </div>
                 `)
+                $('#XSS').empty().append(`
+                    <div class="item-center">
+                        <p>Empty</p>
+                    </div>
+                `)
+                $('#FU').empty().append(`
+                    <div class="item-center">
+                        <p>Empty</p>
+                    </div>
+                `)
             }
             else {
                 notificator('Error', 'Can\'t fetch SQL Injection Rule Library')
                 $('#SQLI').empty().append(`
+                    <div class="item-center">
+                        <p>Error</p>
+                    </div>
+                `)
+                notificator('Error', 'Can\'t fetch Cross Site Scripting Rule Library')
+                $('#XSS').empty().append(`
+                    <div class="item-center">
+                        <p>Error</p>
+                    </div>
+                `)
+                notificator('Error', 'Can\'t fetch File Upload Rule Library')
+                $('#FU').empty().append(`
                     <div class="item-center">
                         <p>Error</p>
                     </div>
