@@ -281,17 +281,17 @@
                     </div>
                     <div id="otherRuleTypeField"></div>
                     <div class="main-card mb-3 card" id="cardOfSQLI">
-                        <div class="card-body"><h1 class="card-title medium-header">SQL Injection (SQLI)</h1>
+                        <div class="card-body"><h1 class="card-title medium-header text-danger">SQL Injection (SQLI)</h1>
                             <div id="SQLI" class="table-responsive"></div>
                         </div>
                     </div>
                     <div class="main-card mb-3 card" id="cardOfXSS">
-                        <div class="card-body"><h1 class="card-title medium-header">Cross Site Scripting (XSS)</h1>
+                        <div class="card-body"><h1 class="card-title medium-header text-primary">Cross Site Scripting (XSS)</h1>
                             <div id="XSS" class="table-responsive"></div>
                         </div>
                     </div>
                     <div class="main-card mb-3 card" id="cardOfFU">
-                        <div class="card-body"><h1 class="card-title medium-header">File Upload (FU)</h1>
+                        <div class="card-body"><h1 class="card-title medium-header text-success">File Upload (FU)</h1>
                             <div id="FU" class="table-responsive"></div>
                         </div>
                     </div>
@@ -303,6 +303,376 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="module" src="./assets/scripts/rule_library.js"></script>
+    <script>
+        function getRuleDetails(get) {
+            const id = get.getAttribute('data-id')
+            document.getElementById('updateButton').setAttribute('data-id', id)
+            $('#ruleDetailsModalTitle').text(`Rule ID: #${id}`)
+            fetchData(
+                '/api/rules/rule-manifest/' + id,
+                'GET',
+                null,
+                function () {
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    const responseData = event
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <form id="ruleUpdateForm">
+                            <div class="position-relative form-group">
+                                <label for="ruleType" class="">Rule Type</label>
+                                <input name="ruleType" id="ruleType" placeholder="Rule Type" type="text" class="form-control" value="${responseData.data.rule_type}">
+                                <div id="ruleTypeErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="ruleExecution" class="">Rule Execution</label>
+                                <textarea rows="4" name="ruleExecution" id="ruleExecution" class="form-control" placeholder="Rule Execution">${responseData.data.rule_execution}</textarea>
+                                <div id="ruleExecutionErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="ruleDescription" class="">Rule Description</label>
+                                <textarea rows="2" name="ruleDescription" id="ruleDescription" class="form-control" placeholder="Rule Description">${responseData.data.rule_description}</textarea>
+                                <div id="ruleDescriptionErrorField"></div>
+                            </div>
+                        </form>
+                    `)
+                },
+                function (event, errorMessage) {                    
+                    const responseError = event
+                    notificator('Error', responseError.reason, 'error')
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            Can't fetch Rule ID #${id}
+                        </div>
+                    `)
+                }
+            )
+            fetchData(
+                '/api/rules/rule-modification/' + id,
+                'GET',
+                null,
+                function () {
+                    $('#ruleDetailsRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    $('#ruleDetailsRelatedModalBody').empty().append(`
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>SQLI Related</strong></h6>
+                                <ul id="sqliRuleUpdateRelated"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>XSS Related</strong></h6>
+                                <ul id="xssRuleUpdateRelated"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>FU Related</strong></h6>
+                                <ul id="fuRuleUpdateRelated"></ul>
+                            </div>
+                        </div>
+                    `)
+                    for (let index = 0; index < event.data.sqli.length; index++) {
+                        const element = event.data.sqli[index];
+                        $('#sqliRuleUpdateRelated').append(`<li>${element}</li>`)
+                    }
+                    for (let index = 0; index < event.data.xss.length; index++) {
+                        const element = event.data.xss[index];
+                        $('#xssRuleUpdateRelated').append(`<li>${element}</li>`)
+                    }
+                    for (let index = 0; index < event.data.fu.length; index++) {
+                        const element = event.data.fu[index];
+                        $('#fuRuleUpdateRelated').append(`<li>${element}</li>`)
+                    }                    
+                },
+                function () {
+                    $('#ruleDetailsRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            Error
+                        </div>
+                    `)
+                    notificator('Error', 'Can\'t fetch Rule Related', 'error')
+                }
+            )
+        }
+
+        function deleteRule(get) {
+            const id = get.getAttribute('data-id')
+            const ruleType = get.getAttribute('data-rule-type')
+            $('#deleteRuleButton').attr('data-id', id)
+            $('#deleteRuleButton').attr('data-rule-type', ruleType)
+            $('#ruleDeleteModalTitle').text(`Delete rule ID: #${id}`)
+            $('#ruleDeleteModalBody').text('Are you sure to want to delete this rule, all rules using this Rule Library will no longer be scanned by this rule?')
+            callAPI(
+                'GET',
+                '/api/rules/rule-termination/' + id,
+                function () {
+                    $('#ruleDeleteRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    const responseData = JSON.parse(event.responseText)
+                    $('#ruleDeleteRelatedModalBody').empty().append(`
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>SQLI Related</strong></h6>
+                                <ul id="sqliRuleRelated"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>XSS Related</strong></h6>
+                                <ul id="xssRuleRelated"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>FU Related</strong></h6>
+                                <ul id="fuRuleRelated"></ul>
+                            </div>
+                        </div>
+                    `)
+                    for (let index = 0; index < responseData.data.sqli.length; index++) {
+                        const element = responseData.data.sqli[index];
+                        $('#sqliRuleRelated').append(`<li>${element}</li>`)
+                    }
+                    for (let index = 0; index < responseData.data.xss.length; index++) {
+                        const element = responseData.data.xss[index];
+                        $('#xssRuleRelated').append(`<li>${element}</li>`)
+                    }
+                    for (let index = 0; index < responseData.data.fu.length; index++) {
+                        const element = responseData.data.fu[index];
+                        $('#fuRuleRelated').append(`<li>${element}</li>`)
+                    }
+                },
+                function (event) {
+                    $('#ruleDeleteRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            Error
+                        </div>
+                    `)
+                    const responseError = JSON.parse(event.responseText)
+                    notificator('Error', responseError.reason, 'error')
+                }
+            )
+        }
+
+        function deleteAll(get) {
+            const ruleType = get.getAttribute('data-rule-type')
+            $('#deleteAllButton').attr('data-rule-type', ruleType)
+            $('#ruleDeleteAllModalTitle').text(`Delete all rules from ${ruleType} Library`)
+            $('#ruleDeleteAllModalBody').text(`Are you sure that if you want to perform this action, the rules using this ${ruleType} Rule Library will be assigned "Not Used"?`)
+            callAPI(
+                'GET',
+                '/api/rules/rule-termination/_?ruleType=' + ruleType,
+                function () {
+                    $('#ruleDeleteAllRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    const responseData = JSON.parse(event.responseText)
+                    $('#ruleDeleteAllRelatedModalBody').empty().append(`
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>SQLI Related</strong></h6>
+                                <ul id="sqliRuleRelatedAll"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>XSS Related</strong></h6>
+                                <ul id="xssRuleRelatedAll"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>FU Related</strong></h6>
+                                <ul id="fuRuleRelatedAll"></ul>
+                            </div>
+                        </div>
+                    `)
+                    for (let index = 0; index < responseData.data.sqli.length; index++) {
+                        const element = responseData.data.sqli[index];
+                        $('#sqliRuleRelatedAll').append(`<li>${element}</li>`)
+                    }
+                    for (let index = 0; index < responseData.data.xss.length; index++) {
+                        const element = responseData.data.xss[index];
+                        $('#xssRuleRelatedAll').append(`<li>${element}</li>`)
+                    }
+                    for (let index = 0; index < responseData.data.fu.length; index++) {
+                        const element = responseData.data.fu[index];
+                        $('#fuRuleRelatedAll').append(`<li>${element}</li>`)
+                    }
+                },
+                function (event) {
+                    $('#ruleDeleteAllRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            Error
+                        </div>
+                    `)
+                    const responseError = JSON.parse(event.responseText)
+                    notificator('Error', responseError.reason, 'error')
+                }
+            )
+        }
+
+        function callAPI(method, endpoint, onLoading, onSuccess, onError, body = null) {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 0 || this.readyState == 1 || this.readyState == 2 || this.readyState == 3) {
+                    onLoading()
+                }
+                else if (this.readyState == 4 && this.status == 200) {
+                    onSuccess(this)
+                }
+                else if (this.status != 200) {
+                    onError(this)
+                }
+            }
+            xhr.open(method, getCookie('backendAPI') + endpoint);
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.timeout = 5000
+            if (body == null) {
+                xhr.send();
+            }
+            else {
+                xhr.send(body);
+            }
+        }
+
+        async function fetchData(endpoint, method = 'GET', body = null, onLoading, onSuccess, onError) {
+            if (onLoading) onLoading();
+
+            try {
+                const options = {
+                    method: method.toUpperCase(),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(getCookie('backendAPI') + endpoint, options);
+
+                if (!response.ok) {
+                    if (onError) onError(response.status, `Error: ${response.statusText}`);
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (onSuccess) onSuccess(data);
+            } catch (error) {
+                if (onError) onError(null, `Network error: ${error.message}`);
+            }
+        }
+
+        function notificator(title, message, type) {
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.options.timeOut = 5000;
+            toastr.options.showMethod = 'slideDown';
+            toastr.options.hideMethod = 'slideUp';
+            toastr.options.preventDuplicates = true;
+            if (type == 'info') {
+                toastr.info(message, title);
+            }
+            if (type == 'success') {
+                toastr.success(message, title);
+            }
+            if (type == 'warning') {
+                toastr.warning(message, title);
+            }
+            if (type == 'error') {
+                toastr.error(message, title);
+            }
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "="
+            const cookiesArray = document.cookie.split(';')
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i]
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1, cookie.length)
+                }
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length))
+                }
+            }
+            return null;
+        }
+    </script>
 </body>
 
 </html>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ruleDetailsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ruleDetailsModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ruleDetailsModalBody"></div>
+            <div class="modal-body" id="ruleDetailsRelatedModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ruleDetailsModalCloseButton">Close</button>
+                <button type="button" class="btn btn-primary" id="updateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ruleDeleteModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ruleDeleteModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ruleDeleteModalBody">
+            </div>
+            <div class="modal-body" id="ruleDeleteRelatedModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ruleDeleteModalCloseButton">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteRuleButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ruleDeleteAllModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ruleDeleteAllModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ruleDeleteAllModalBody">
+            </div>
+            <div class="modal-body" id="ruleDeleteAllRelatedModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ruleDeleteAllModalCloseButton">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteAllButton">Delete all</button>
+            </div>
+        </div>
+    </div>
+</div>

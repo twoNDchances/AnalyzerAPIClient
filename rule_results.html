@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Results</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/general.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <div class="app-header header-shadow bg-night-sky header-text-light">
+            <div class="app-header__logo">
+                <div class="logo-src"></div>
+                <div class="header__pane ml-auto">
+                    <div>
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                            data-class="closed-sidebar">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button"
+                        class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>
+            <div class="app-header__content">
+                <div class="app-header-left">
+                    <ul class="header-menu nav">
+                        <li class="nav-item">
+                            <a href="rule_management.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-shield"> </i>
+                                Rule Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rule_results.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-news-paper"> </i>
+                                Rule Results
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rule_library.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-box2"> </i>
+                                Rule Library
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="rule_inheritance.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-shuffle"> </i>
+                                Rule Inheritance
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="intergration_management.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-share"> </i>
+                                Intergration Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="action_management.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-gleam"> </i>
+                                Action Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="configuration.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-config"> </i>
+                                Configuration Backend
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-main">
+            <div class="app-sidebar sidebar-shadow">
+                <div class="app-header__logo">
+                    <div class="logo-src"></div>
+                    <div class="header__pane ml-auto">
+                        <div>
+                            <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                                data-class="closed-sidebar">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-header__mobile-menu">
+                    <div>
+                        <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="app-header__menu">
+                    <span>
+                        <button type="button"
+                            class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                            <span class="btn-icon-wrapper">
+                                <i class="fa fa-ellipsis-v fa-w-6"></i>
+                            </span>
+                        </button>
+                    </span>
+                </div>
+                <div class="scrollbar-sidebar sidebar-scroller">
+                    <div class="app-sidebar__inner">
+                        <ul class="vertical-nav-menu">
+                            <li class="app-sidebar__heading">Main</li>
+                            <li>
+                                <a href="rule_management.html">
+                                    <i class="metismenu-icon pe-7s-shield"></i>
+                                    Rule Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="rule_results.html" class="mm-active">
+                                    <i class="metismenu-icon pe-7s-news-paper"></i>
+                                    Rule Results
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="metismenu-icon pe-7s-plus"></i>
+                                    Rule Creation
+                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="sqli_rule_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            SQL Injection (SQLi)
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="xss_rule_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            Cross Site Scripting (XSS)
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="fu_rule_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            File Upload (FU)
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="app-sidebar__heading">Public</li>
+                            <li>
+                                <a href="rule_library.html">
+                                    <i class="metismenu-icon pe-7s-box2"></i>
+                                    Rule Library
+                                </a>
+                            </li>
+                            <li>
+                                <a href="rule_inheritance.html">
+                                    <i class="metismenu-icon pe-7s-shuffle"></i>
+                                    Rule Inheritance
+                                </a>
+                            </li>
+                            <li class="app-sidebar__heading">Outside</li>
+                            <li>
+                                <a href="intergration_management.html">
+                                    <i class="metismenu-icon pe-7s-share"></i>
+                                    Intergration Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="metismenu-icon pe-7s-plugin"></i>
+                                    Intergration Creation
+                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="yara_rule_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            YARA Rule
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="app-sidebar__heading">Target</li>
+                            <li>
+                                <a href="action_management.html">
+                                    <i class="metismenu-icon pe-7s-gleam"></i>
+                                    Action Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="metismenu-icon pe-7s-rocket"></i>
+                                    Action Initiation
+                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="webhook_action_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            Webhook
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="app-sidebar__heading">Setup</li>
+                            <li>
+                                <a href="configuration.html">
+                                    <i class="metismenu-icon pe-7s-config"></i>
+                                    Configuration Backend
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    <div class="app-page-title">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-heading">
+                                <div class="page-title-icon">
+                                    <i class="pe-7s-news-paper icon-gradient bg-ripe-malin"></i>
+                                </div>
+                                <div>Rule Results
+                                    <div class="page-title-subheading">
+                                        Track your Defined Rules
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-card mb-3 card" id="cardOfChart">
+                        <div class="card-body">
+                            <canvas id="resultStream"></canvas>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <input placeholder="Search" type="text" class="mb-2 form-control-lg form-control" id="searchField" autofocus>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                    <div class="main-card mb-3 card" id="cardOfResults">
+                        <div class="card-body">
+                            <div class="text-center"><h1 class="card-title real-header">Rule Results</h1></div>
+                            <div id="resultManagements" class="text-center table-responsive"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./assets/scripts/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="./assets/scripts/rule_results.js"></script>
+    <script>
+        function getResultLogs(get) {
+            const id = get.getAttribute('data-id')
+            $('#resultLogsModalTitle').empty().text(`Result Log ID: #${id}`)
+            callAPI(
+                'GET',
+                '/api/results/show/' + id,
+                function () {
+                    $('#resultLogsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    const responseData = JSON.parse(event.responseText)
+                    $('#resultLogsModalBody').empty().append(`
+                        <pre class="clear-text">${JSON.stringify(JSON.parse(responseData.data.logs), null, 4)}</pre>
+                    `)
+                },
+                function (event) {
+                    $('#resultLogsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            Error
+                        </div>
+                    `)
+                    const responseError = JSON.parse(event.responseText)
+                    notificator('Error', responseError.reason, 'error')
+                }
+            )
+        }
+
+        function callAPI(method, endpoint, onLoading, onSuccess, onError, body = null) {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 0 || this.readyState == 1 || this.readyState == 2 || this.readyState == 3) {
+                    onLoading()
+                }
+                else if (this.readyState == 4 && this.status == 200) {
+                    onSuccess(this)
+                }
+                else if (this.status != 200) {
+                    onError(this)
+                }
+            }
+            xhr.open(method, getCookie('backendAPI') + endpoint);
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.timeout = 5000
+            if (body == null) {
+                xhr.send();
+            }
+            else {
+                xhr.send(body);
+            }
+        }
+
+        function notificator(title, message, type) {
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.options.timeOut = 5000;
+            toastr.options.showMethod = 'slideDown';
+            toastr.options.hideMethod = 'slideUp';
+            toastr.options.preventDuplicates = true;
+            if (type == 'info') {
+                toastr.info(message, title);
+            }
+            if (type == 'success') {
+                toastr.success(message, title);
+            }
+            if (type == 'warning') {
+                toastr.warning(message, title);
+            }
+            if (type == 'error') {
+                toastr.error(message, title);
+            }
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "="
+            const cookiesArray = document.cookie.split(';')
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i]
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1, cookie.length)
+                }
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length))
+                }
+            }
+            return null;
+        }
+    </script>
+</body>
+
+</html>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="resultLogsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultLogsModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="resultLogsModalBody"></div>
+        </div>
+    </div>
+</div>

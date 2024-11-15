@@ -292,17 +292,17 @@
                         <div class="col-md-4"></div>
                     </div>
                     <div class="main-card mb-3 card" id="cardOfSQLI">
-                        <div class="card-body"><h1 class="card-title real-header">SQL Injection (SQLI)</h1>
+                        <div class="card-body"><h1 class="card-title real-header text-danger">SQL Injection (SQLI)</h1>
                             <div id="ruleManagementOfSQLI" class="text-center table-responsive"></div>
                         </div>
                     </div>
                     <div class="main-card mb-3 card" id="cardOfXSS">
-                        <div class="card-body"><h1 class="card-title real-header">Cross Site Scripting (XSS)</h1>
+                        <div class="card-body"><h1 class="card-title real-header text-primary">Cross Site Scripting (XSS)</h1>
                             <div id="ruleManagementOfXSS" class="text-center table-responsive"></div>
                         </div>
                     </div>
                     <div class="main-card mb-3 card" id="cardOfFU">
-                        <div class="card-body"><h1 class="card-title real-header">File Upload (FU)</h1>
+                        <div class="card-body"><h1 class="card-title real-header text-success">File Upload (FU)</h1>
                             <div id="ruleManagementOfFU" class="text-center table-responsive"></div>
                         </div>
                     </div>
@@ -575,6 +575,155 @@
             )
         }
 
+        function getFURuleDetails(get) {
+            const id = get.getAttribute('data-id')
+            document.getElementById('updateButton').setAttribute('data-type', 'FU')
+            document.getElementById('updateButton').setAttribute('data-id', id)
+            callAPI(
+                'GET',
+                '/api/fus/show/' + id,
+                function () {
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    const responseText = JSON.parse(event.responseText)
+                    console.log(responseText);
+                    
+                    $('#ruleDetailsModalTitle').empty().append('File Upload Rule ID: #' + responseText.data.id)
+                    $('#ruleDetailsModalBody').empty().append(`
+                        <form id="fileUploadRuleUpdateForm">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="ruleName" class="">Rule Name</label>
+                                        <input name="ruleName" id="ruleName" placeholder="Rule Name" type="text" class="form-control" value="${responseText.data.rule_name}">
+                                        <div id="ruleNameErrorField"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label class="">Is Enabled</label>
+                                        <fieldset class="position-relative form-group">
+                                            <div class="position-relative form-check">
+                                                <label class="form-check-label">
+                                                    <input name="isEnabled" type="radio" class="form-check-input" value="true" id="isEnabledTrue">Yes (In case, create this rule and start to use it [Default])
+                                                </label>
+                                            </div>
+                                            <div class="position-relative form-check">
+                                                <label class="form-check-label">
+                                                    <input name="isEnabled" type="radio" class="form-check-input" value="false" id="isEnabledFalse">No (In case, create but it just recieve request and not do anything)
+                                                </label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="targetField" class="">Target Field</label>
+                                <textarea rows="4" name="targetField" id="targetField" class="form-control" placeholder="Example: request.body">${responseText.data.target_field}</textarea>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="ipRootCauseField" class="">IP Root Cause Field</label>
+                                <textarea rows="2" name="ipRootCauseField" id="ipRootCauseField" class="form-control" placeholder="Example: client.ip">${responseText.data.ip_root_cause_field}</textarea>
+                                <div id="ipRootCauseFieldErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="regexMatcher" class="">Regex Matcher</label>
+                                <textarea rows="2" name="regexMatcher" id="regexMatcher" class="form-control" placeholder="Example: \\b(exec|eval|passthru)\\b">${responseText.data.regex_matcher}</textarea>
+                                <div id="regexMatcherErrorField"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="ruleLibrary" class="">Rule Library (First Step)</label>
+                                        <div id="ruleLibraryField"></div>
+                                        <div id="ruleLibraryErrorField"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <p>Intergration Rules (Second Step: Optional)</p>
+                                        <div>
+                                            <div class="custom-checkbox custom-control custom-control-inline">
+                                                <input type="checkbox" name="yaraRuleIntergration" id="yaraRuleIntergration" class="custom-control-input" value="YARA">
+                                                <label class="custom-control-label" for="yaraRuleIntergration">YARA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="action" class="">Action</label>
+                                <div id="actionField">
+                                </div>
+                            </div>
+                        </form>
+                    `)
+                    if (responseText.data.is_enabled == true) {
+                        $('#isEnabledTrue').prop("checked", true)
+                    }
+                    else {
+                        $("#isEnabledFalse").prop("checked", true);
+                    }
+                    $('#ruleLibraryField').empty().append(`
+                        <select name="ruleLibrary" id="ruleLibrary" class="form-control">
+                        </select>
+                    `)
+                    if (responseText.data.yara_rule_intergration == true) {
+                        $('#yaraRuleIntergration').prop('checked', true)
+                    }
+                    $('#actionField').empty().append(`
+                        <select name="action" id="action" class="form-control">
+                        </select>
+                    `)
+                    let ruleLibrary = ['not_used']
+                    let action = ['not_used']
+                    for (let index = 0; index < responseText.data.rule_library.rules.length; index++) {
+                        const element = responseText.data.rule_library.rules[index];
+                        ruleLibrary.push(element)
+                    }
+                    for (let index = 0; index < responseText.data.action_id.actions.length; index++) {
+                        const element = responseText.data.action_id.actions[index];
+                        action.push(element)
+                    }
+                    for (let index = 0; index < ruleLibrary.length; index++) {
+                        const element = ruleLibrary[index];
+                        if (element == responseText.data.rule_library.choice) {
+                            $('#ruleLibrary').append(`
+                                <option value="${element}" selected>${element}</option>
+                            `)
+                        }
+                        else {
+                            $('#ruleLibrary').append(`
+                                <option value="${element}">${element}</option>
+                            `)
+                        }
+                    }
+                    for (let index = 0; index < action.length; index++) {
+                        const element = action[index];
+                        if (element == responseText.data.action_id.choice) {
+                            $('#action').append(`
+                                <option value="${element}" selected>${element}</option>
+                            `)
+                        }
+                        else {
+                            $('#action').append(`
+                                <option value="${element}">${element}</option>
+                            `)
+                        }
+                    }
+                },
+                function () {
+                    notificator('Error', 'Can\'t fetch rule details of FU', 'error')
+                    $('#ruleDetailsModalBody').empty();
+                }
+            )
+        }
+
         function deleteSQLIRule(get) {
             const id = get.getAttribute('data-id')
             const ruleName = get.getAttribute('data-rule-name')
@@ -587,6 +736,14 @@
             const id = get.getAttribute('data-id')
             const ruleName = get.getAttribute('data-rule-name')
             document.getElementById('removeButton').setAttribute('data-type', 'XSS')
+            document.getElementById('removeButton').setAttribute('data-id', id)
+            $('#ruleDeleteModalBody').empty().append(`<p>Do you really want to delete ${ruleName}?</p>`)
+        }
+
+        function deleteFURule(get) {
+            const id = get.getAttribute('data-id')
+            const ruleName = get.getAttribute('data-rule-name')
+            document.getElementById('removeButton').setAttribute('data-type', 'FU')
             document.getElementById('removeButton').setAttribute('data-id', id)
             $('#ruleDeleteModalBody').empty().append(`<p>Do you really want to delete ${ruleName}?</p>`)
         }

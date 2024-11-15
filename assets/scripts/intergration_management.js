@@ -1,4 +1,4 @@
-import { fetchData, notificator, checker, callAPI } from "./general.js";
+import { fetchData, notificator, checker, callAPI, convertFormToJSON } from "./general.js";
 
 checker()
 
@@ -40,12 +40,12 @@ $(document).ready(function () {
                         <td><pre><textarea class="form-control" disabled rows="20">${element.yara_rule}</textarea></pre></td>
                         <td class="size-adjustment">${element.yara_description}</td>
                         <td class="size-appendix">
-                            <button class="mb-2 mr-2 btn btn-light">
+                            <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#intergrationDetailsModal" data-id="${element.id}" onclick=getYARARuleDetails(this)>
                                 <i class="fa fa-eye"></i>
                             </button>
                         </td>
                         <td class="size-appendix">
-                            <button class="mb-2 mr-2 btn btn-danger">
+                            <button class="mb-2 mr-2 btn btn-danger" data-toggle="modal" data-target="#intergrationDeleteModal" data-id="${element.id}" onclick=deleteYARARule(this)>
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
@@ -87,7 +87,7 @@ $(document).ready(function () {
                 formattedLines.push(' '.repeat(indentLevel * 4) + line);
                 indentLevel++;
             } else if (line.includes('}')) {
-                indentLevel = Math.max(indentLevel - 1, 0); // Đảm bảo indentLevel không bao giờ âm
+                indentLevel = Math.max(indentLevel - 1, 0);
                 formattedLines.push(' '.repeat(indentLevel * 4) + line);
             } else if (line.includes(':')) {
                 formattedLines.push(' '.repeat(indentLevel * 4) + line);
@@ -115,5 +115,68 @@ $(document).ready(function () {
                 }
             }
         }
+    })
+
+    $('#updateButton').on('click', function () {
+        const id = document.getElementById('updateButton').getAttribute('data-id')
+        const form = document.getElementById('intergrationUpdateForm')
+        const formData = new FormData(form)
+        const formJSON = convertFormToJSON(formData)
+        callAPI(
+            'PUT',
+            '/api/yaras/update/' + id,
+            function () {
+                $('#updateButton').empty().append(`<div class="loader"></div>`).attr('disabled', true)
+            },
+            function (event) {
+                $('#updateButton').empty().text('Update').removeAttr('disabled')
+                $('#intergrationDetailsModalCloseButton').click()
+                notificator('Success', 'Update YARA Rule successfully', 'success')
+                const responseData = JSON.parse(event.responseText)
+                $(`#ruleManagementRowOfYARA_${responseData.data.id}`).empty().append(`
+                    <th class="size-adjustment">${responseData.data.id}</th>
+                    <td><pre><textarea class="form-control" disabled rows="20">${responseData.data.yara_rule}</textarea></pre></td>
+                    <td class="size-adjustment">${responseData.data.yara_description}</td>
+                    <td class="size-appendix">
+                        <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#intergrationDetailsModal" data-id="${responseData.data.id}" onclick=getYARARuleDetails(this)>
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </td>
+                    <td class="size-appendix">
+                        <button class="mb-2 mr-2 btn btn-danger" data-toggle="modal" data-target="#intergrationDeleteModal" data-id="${responseData.data.id}" onclick=deleteYARARule(this)>
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                `)
+            },
+            function (event) {
+                $('#updateButton').empty().text('Update').removeAttr('disabled')
+                const responseError = JSON.parse(event.responseText)
+                notificator('Error', responseError.reason, 'error')
+            },
+            formJSON
+        )
+    })
+
+    $('#deleteButton').on('click', function () {
+        const id = document.getElementById('deleteButton').getAttribute('data-id')
+        callAPI(
+            'DELETE',
+            '/api/yaras/delete/' + id,
+            function () {
+                $('#deleteButton').empty().append(`<div class="loader"></div>`).attr('disabled', true)
+            },
+            function () {
+                $('#deleteButton').empty().text('Delete').removeAttr('disabled')
+                $('#intergrationDeleteModalCloseButton').click()
+                notificator('Success', 'Delete YARA Rule successfully', 'success')
+                $(`#ruleManagementRowOfYARA_${id}`).remove()
+            },
+            function (event) {
+                $('#deleteButton').empty().text('Delete').removeAttr('disabled')
+                const responseError = JSON.parse(event.responseText)
+                notificator('Error', responseError.reason, 'error')
+            }
+        )
     })
 })

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-time Chart Update</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart" width="600" height="400"></canvas>
+
+  <script>
+    // Khởi tạo dữ liệu ban đầu
+    const labels = Array.from({ length: 10 }, (_, i) => `Point ${i + 1}`);
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Line 1',
+          data: Array.from({ length: 10 }, () => Math.random() * 100),
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderWidth: 2
+        },
+        {
+          label: 'Line 2',
+          data: Array.from({ length: 10 }, () => Math.random() * 100),
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderWidth: 2
+        }
+      ]
+    };
+
+    // Tạo biểu đồ
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        animation: false, // Tắt animation để cập nhật mượt hơn
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Time Points'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Value'
+            }
+          }
+        }
+      }
+    });
+
+    // Hàm cập nhật dữ liệu
+    function updateChart() {
+      // Thêm điểm dữ liệu ngẫu nhiên cho mỗi dataset
+      myChart.data.datasets.forEach(dataset => {
+        dataset.data.shift(); // Loại bỏ dữ liệu cũ nhất
+        dataset.data.push(Math.random() * 100); // Thêm dữ liệu mới
+      });
+
+      // Cập nhật biểu đồ
+      myChart.update();
+    }
+
+    // Cập nhật biểu đồ mỗi 1 giây
+    setInterval(updateChart, 1000);
+  </script>
+</body>
+</html>

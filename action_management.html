@@ -341,13 +341,17 @@
                     `)
                     $('#actionRelatedModalBody').empty().append(`
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <h6 class="text-center"><strong>SQLI Related</strong></h6>
                                 <ul id="sqliActionRelated"></ul>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <h6 class="text-center"><strong>XSS Related</strong></h6>
                                 <ul id="xssActionRelated"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>FU Related</strong></h6>
+                                <ul id="fuActionRelated"></ul>
                             </div>
                         </div>
                     `)
@@ -358,6 +362,10 @@
                     for (let index = 0; index < responseText.data.rule_related.xss.length; index++) {
                         const element = responseText.data.rule_related.xss[index];
                         $('#xssActionRelated').append(`<li>${element}</li>`)
+                    }
+                    for (let index = 0; index < responseText.data.rule_related.fu.length; index++) {
+                        const element = responseText.data.rule_related.fu[index];
+                        $('#fuActionRelated').append(`<li>${element}</li>`)
                     }
                 },
                 function (event) {
@@ -387,13 +395,17 @@
                     $('#actionRelatedDeleteModalBody').empty().append(`
                         <hr>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <h6 class="text-center"><strong>SQLI Related</strong></h6>
                                 <ul id="sqliActionDeleteRelated"></ul>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <h6 class="text-center"><strong>XSS Related</strong></h6>
                                 <ul id="xssActionDeleteRelated"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>FU Related</strong></h6>
+                                <ul id="fuActionDeleteRelated"></ul>
                             </div>
                         </div>
                     `)
@@ -406,6 +418,12 @@
                     for (let index = 0; index < responseData.data.xss.length; index++) {
                         const element = responseData.data.xss[index];
                         $('#xssActionDeleteRelated').append(`
+                            <li>${element}</li>
+                        `)
+                    }
+                    for (let index = 0; index < responseData.data.fu.length; index++) {
+                        const element = responseData.data.fu[index];
+                        $('#fuActionDeleteRelated').append(`
                             <li>${element}</li>
                         `)
                     }

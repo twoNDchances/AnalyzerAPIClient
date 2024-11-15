@@ -182,7 +182,6 @@ $(document).ready(function () {
                             <th>Regex Matcher</th>
                             <th>Rule Library</th>
                             <th>YARA Rule Intergration</th>
-                            <th>VirusTotal API Key</th>
                             <th>Action</th>
                             <th>View Details</th>
                             <th>Remove</th>
@@ -195,7 +194,7 @@ $(document).ready(function () {
             for (let index = 0; index < responseData.data.length; index++) {
                 const element = responseData.data[index];
                 $('#ruleManagementTableOfFU').append(`
-                    <tr id="ruleManagementTableOfFU_${element.id}">
+                    <tr id="ruleManagementRowOfFU_${element.id}">
                         <th>${element.id}</th>
                         <td>${element.rule_name}</td>
                         <td>${element.is_enabled}</td>
@@ -204,15 +203,14 @@ $(document).ready(function () {
                         <td>${element.regex_matcher}</td>
                         <td>${element.rule_library}</td>
                         <td>${element.yara_rule_intergration}</td>
-                        <td>${element.virus_total_api_key}</td>
                         <td>${element.action_id}</td>
                         <td>
-                            <button class="mb-2 mr-2 btn btn-light">
+                            <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#ruleDetailsModal" data-id="${element.id}" onclick=getFURuleDetails(this)>
                                 <i class="fa fa-eye"></i>
                             </button>
                         </td>
                         <td>
-                            <button class="mb-2 mr-2 btn btn-danger">
+                            <button class="mb-2 mr-2 btn btn-danger" data-toggle="modal" data-target="#ruleDeleteModal" data-id="${element.id}" data-rule-name="${element.rule_name}" onclick=deleteFURule(this)>
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
@@ -372,6 +370,53 @@ $(document).ready(function () {
                 formJSON
             )
         }
+        else if (type == 'FU') {
+            const form = document.getElementById('fileUploadRuleUpdateForm');
+            const formData = new FormData(form)
+            const formJSON = convertFormToJSON(formData)
+            callAPI(
+                'PUT',
+                '/api/fus/update/' + id,
+                function () {
+                    $('#updateButton').empty().append(`
+                        <div class="loader"></div>
+                    `).attr('disabled', true)
+                },
+                function (event) {
+                    const responseData = JSON.parse(event.responseText)
+                    $('#updateButton').empty().text('Update').removeAttr('disabled')
+                    notificator('Success', 'Update FU Rule successfully', 'success')
+                    $(`#ruleManagementRowOfFU_${responseData.data.id}`).empty().append(`
+                        <th>${responseData.data.id}</th>
+                        <td>${responseData.data.rule_name}</td>
+                        <td>${responseData.data.is_enabled}</td>
+                        <td>${responseData.data.target_field}</td>
+                        <td>${responseData.data.ip_root_cause_field}</td>
+                        <td>${responseData.data.regex_matcher}</td>
+                        <td>${responseData.data.rule_library}</td>
+                        <td>${responseData.data.yara_rule_intergration}</td>
+                        <td>${responseData.data.action}</td>
+                        <td>
+                            <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#ruleDetailsModal" data-id="${responseData.data.id}" onclick=getFURuleDetails(this)>
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="mb-2 mr-2 btn btn-danger" data-toggle="modal" data-target="#ruleDeleteModal" data-id="${responseData.data.id}" data-rule-name="${responseData.data.rule_name}" onclick=deleteFURule(this)>
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    `)
+                    $('#ruleDetailsModalCloseButton').click()
+                },
+                function (event) {
+                    const responseError = JSON.parse(event.responseText)
+                    $('#updateButton').empty().text('Update').removeAttr('disabled')
+                    notificator('Error', responseError.reason, 'error')
+                },
+                formJSON
+            )
+        }
     })
 
     $('#removeButton').on('click', function () {
@@ -414,6 +459,29 @@ $(document).ready(function () {
                     $('#removeButton').empty().text('Remove').removeAttr('disabled')
                     notificator('Success', 'Remove XSS Rule successfully', 'success')
                     $(`#ruleManagementRowOfXSS_${responseData.data.id}`).remove()
+                    $('#ruleDeleteModalCloseButton').click()
+                },
+                function (event) {
+                    const responseError = JSON.parse(event.responseText)
+                    $('#removeButton').empty().text('Remove').removeAttr('disabled')
+                    notificator('Error', responseError.reason, 'error')
+                }
+            )
+        }
+        else if (type == 'FU') {
+            callAPI(
+                'DELETE',
+                '/api/fus/delete/' + id,
+                function () {
+                    $('#removeButton').empty().append(`
+                        <div class="loader"></div>
+                    `).attr('disabled', true)
+                },
+                function (event) {
+                    const responseData = JSON.parse(event.responseText)
+                    $('#removeButton').empty().text('Remove').removeAttr('disabled')
+                    notificator('Success', 'Remove FU Rule successfully', 'success')
+                    $(`#ruleManagementRowOfFU_${responseData.data.id}`).remove()
                     $('#ruleDeleteModalCloseButton').click()
                 },
                 function (event) {

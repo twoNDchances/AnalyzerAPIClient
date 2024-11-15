@@ -11,7 +11,6 @@ function updateJsonPreview() {
         regex_matcher: $('#regexMatcher').val(),
         rule_library: $('#ruleLibrary').val(),
         yara_rule_intergration: document.getElementById("yaraRuleIntergration").checked ? $('#yaraRuleIntergration').val() : 'not_used',
-        virus_total_api_key: $('#virusTotalAPIKey').val(),
         action: $('#action').val()
     }    
     const jsonString = JSON.stringify(formData, null, 4)

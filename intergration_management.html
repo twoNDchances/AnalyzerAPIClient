@@ -295,6 +295,246 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="module" src="./assets/scripts/intergration_management.js"></script>
+    <script>
+        function getYARARuleDetails(get) {
+            const id = get.getAttribute('data-id')
+            $('#updateButton').attr('data-id', id)
+            $('#intergrationDetailsModalTitle').empty().text(`YARA Rule ID: #${id}`)
+            fetchData(
+                '/api/yaras/show/' + id,
+                'GET',
+                null,
+                function () {
+                    $('#intergrationDetailsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (responseData) {
+                    $('#intergrationDetailsModalBody').empty().append(`
+                        <form id="intergrationUpdateForm">
+                            <div class="position-relative form-group">
+                                <label for="yaraRule" class="">YARA Rule</label>
+                                <textarea rows="20" name="yaraRule" id="yaraRule" class="form-control" placeholder="YARA Rule">${responseData.data.yara_rule}</textarea>
+                                <div id="yaraRuleErrorField"></div>
+                            </div>
+                            <div class="position-relative form-group">
+                                <label for="yaraDescription" class="">Rule Description</label>
+                                <textarea rows="5" name="yaraDescription" id="yaraDescription" class="form-control" placeholder="YARA Description">${responseData.data.yara_description}</textarea>
+                                <div id="yaraDescriptionErrorField"></div>
+                            </div>
+                        </form>
+                    `)
+                },
+                function (responseError) {
+                    $('#intergrationDetailsModalBody').empty().append(`
+                        <div class="small-item-center">
+                            Error
+                        </div>
+                    `)
+                    notificator('Error', responseError.reason, 'error')
+                }
+            )
+            fetchData(
+                '/api/yaras/update/_',
+                'GET',
+                null,
+                function () {
+                    $('#intergrationRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (responseData) {
+                    $('#intergrationRelatedModalBody').empty().append(`
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>FU Related</strong></h6>
+                                <ul id="fuRelated"></ul>
+                            </div>
+                        </div>
+                    `)
+                    for (let index = 0; index < responseData.data.length; index++) {
+                        const element = responseData.data[index];
+                        $('#fuRelated').append(`<li>${element}</li>`)
+                    }
+                },
+                function (responseError) {
+                    $('#intergrationRelatedModalBody').empty()
+                    notificator('Error', responseError.reason, 'error')
+                }
+            )
+        }
+
+        function deleteYARARule(get) {
+            const id = get.getAttribute('data-id')
+            $('#deleteButton').attr('data-id', id)
+            $('#intergrationDeleteModalTitle').empty().text(`YARA Rule ID: #${id}`)
+            $('#intergrationDeleteModalBody').empty().text('Are you sure to want to delete this YARA Rule, all rules using this YARA Rule will no longer be scanned by this rule?')            
+            callAPI(
+                'GET',
+                '/api/yaras/delete/_',
+                function () {
+                    $('#intergrationDeleteRelatedModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (event) {
+                    $('#intergrationDeleteRelatedModalBody').empty().append(`
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>FU Related</strong></h6>
+                                <ul id="fuDeleteRelated"></ul>
+                            </div>
+                        </div>
+                    `)
+                    const responseData = JSON.parse(event.responseText)
+                    for (let index = 0; index < responseData.data.length; index++) {
+                        const element = responseData.data[index];
+                        $('#fuDeleteRelated').append(`<li>${element}</li>`)
+                    }
+                },
+                function (event) {
+                    $('#intergrationDeleteRelatedModalBody').empty()
+                    notificator('Error', responseError.reason, 'error')
+                }
+            )
+        }
+
+        async function fetchData(endpoint, method = 'GET', body = null, onLoading, onSuccess, onError) {
+            if (onLoading) onLoading();
+
+            try {
+                const options = {
+                    method: method.toUpperCase(),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(getCookie('backendAPI') + endpoint, options);
+
+                if (!response.ok) {
+                    if (onError) onError(response.status, `Error: ${response.statusText}`);
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (onSuccess) onSuccess(data);
+            } catch (error) {
+                if (onError) onError(null, `Network error: ${error.message}`);
+            }
+        }
+
+        function callAPI(method, endpoint, onLoading, onSuccess, onError, body = null) {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 0 || this.readyState == 1 || this.readyState == 2 || this.readyState == 3) {
+                    onLoading()
+                }
+                else if (this.readyState == 4 && this.status == 200) {
+                    onSuccess(this)
+                }
+                else if (this.status != 200) {
+                    onError(this)
+                }
+            }
+            xhr.open(method, getCookie('backendAPI') + endpoint);
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.timeout = 5000
+            if (body == null) {
+                xhr.send();
+            }
+            else {
+                xhr.send(body);
+            }
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "="
+            const cookiesArray = document.cookie.split(';')
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i]
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1, cookie.length)
+                }
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length))
+                }
+            }
+            return null;
+        }
+
+        function notificator(title, message, type) {
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.options.timeOut = 5000;
+            toastr.options.showMethod = 'slideDown';
+            toastr.options.hideMethod = 'slideUp';
+            toastr.options.preventDuplicates = true;
+            if (type == 'info') {
+                toastr.info(message, title);
+            }
+            if (type == 'success') {
+                toastr.success(message, title);
+            }
+            if (type == 'warning') {
+                toastr.warning(message, title);
+            }
+            if (type == 'error') {
+                toastr.error(message, title);
+            }
+        }
+    </script>
 </body>
 
 </html>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="intergrationDetailsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="intergrationDetailsModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="intergrationDetailsModalBody"></div>
+            <div class="modal-body" id="intergrationRelatedModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="intergrationDetailsModalCloseButton">Close</button>
+                <button type="button" class="btn btn-primary" id="updateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="intergrationDeleteModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="intergrationDeleteModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="intergrationDeleteModalBody"></div>
+            <div class="modal-body" id="intergrationDeleteRelatedModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="intergrationDeleteModalCloseButton">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -118,7 +118,6 @@ $(document).ready(function () {
                 jsonObject[key] = value;
             }
         });
-        console.log(jsonObject);
         callAPI(
             'POST',
             '/api/yaras/create',
