@@ -1,8 +1,26 @@
-import { fetchData, getCookie, notificator, checker, callAPI, convertFormToJSON } from './general.js';
+import { fetchData, notificator, checker, callAPI, convertFormToJSON } from './general.js';
 
 checker()
 
 $(document).ready(function () {
+    $('#actionType').on('change', function () {
+        const actionTypeList = ['Webhook', 'Email']
+        for (let index = 0; index < actionTypeList.length; index++) {
+            const element = actionTypeList[index];
+            if ($('#actionType').val() == 'null') {
+                $(`#cardOf${element}`).show()
+            }
+            else {
+                if ($('#actionType').val() != element.toLowerCase()) {
+                    $(`#cardOf${element}`).hide()
+                }
+                else {
+                    $(`#cardOf${element}`).show()
+                }
+            }
+        }
+    })
+
     fetchData(
         '/api/actions/list',
         'GET',
@@ -85,7 +103,7 @@ $(document).ready(function () {
                 `)
             }
             else {
-                $('#actionManagementOfWebhook').empty().append(`
+                $('#actionManagementOfEmail').empty().append(`
                     <table class="mb-0 table table-striped actionManagementTable">
                         <thead>
                             <tr>
@@ -103,12 +121,14 @@ $(document).ready(function () {
                 `)
                 for (let index = 0; index < emailData.length; index++) {
                     const element = emailData[index];
+                    let actionConfigurationJSON = JSON.parse(element.action_configuration)
+                    actionConfigurationJSON.smtp.password = '*'.repeat(actionConfigurationJSON.smtp.password.length)
                     $('#actionManagementTableOfEmail').append(`
                         <tr id="actionManagementRowOfEmail_${element.id}">
                             <th class="text-center">${element.id}</th>
                             <td class="text-center">${element.action_name}</td>
                             <td class="text-center">${element.action_type}</td>
-                            <td><pre>${JSON.stringify(JSON.parse(element.action_configuration), null, 4)}</pre></td>
+                            <td><pre>${JSON.stringify(actionConfigurationJSON, null, 4)}</pre></td>
                             <td class="text-center">
                                 <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#actionDetailsModal" data-id="${element.id}" onclick=getActionDetails(this)>
                                     <i class="fa fa-eye"></i>
@@ -209,11 +229,13 @@ $(document).ready(function () {
                     `)
                 }
                 else if (responseData.data.action_type == 'email') {
+                    let actionConfigurationJSON = responseData.data.action_configuration
+                    actionConfigurationJSON.smtp.password = '*'.repeat(responseData.data.action_configuration.smtp.password.length)
                     $(`#actionManagementRowOfEmail_${responseData.data.id}`).empty().append(`
                         <th class="text-center">${responseData.data.id}</th>
                         <td class="text-center">${responseData.data.action_name}</td>
                         <td class="text-center">${responseData.data.action_type}</td>
-                        <td><pre>${JSON.stringify(JSON.parse(responseData.data.action_configuration), null, 4)}</pre></td>
+                        <td><pre>${JSON.stringify(actionConfigurationJSON, null, 4)}</pre></td>
                         <td class="text-center">
                             <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#actionDetailsModal" data-id="${responseData.data.id}" onclick=getActionDetails(this)>
                                 <i class="fa fa-eye"></i>

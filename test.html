@@ -3,75 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Real-time Chart Update</title>
+  <title>Rule Management Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <canvas id="myChart" width="600" height="400"></canvas>
+  <h1>Rule Management Monitoring</h1>
+  <canvas id="ruleChart" width="800" height="400"></canvas>
 
   <script>
-    // Khởi tạo dữ liệu ban đầu
-    const labels = Array.from({ length: 10 }, (_, i) => `Point ${i + 1}`);
-    const data = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Line 1',
-          data: Array.from({ length: 10 }, () => Math.random() * 100),
-          borderColor: 'rgba(255, 99, 132, 1)',
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderWidth: 2
-        },
-        {
-          label: 'Line 2',
-          data: Array.from({ length: 10 }, () => Math.random() * 100),
-          borderColor: 'rgba(54, 162, 235, 1)',
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderWidth: 2
-        }
-      ]
-    };
+    const ctx = document.getElementById('ruleChart').getContext('2d');
 
-    // Tạo biểu đồ
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
+    // Khởi tạo biểu đồ
+    const ruleChart = new Chart(ctx, {
       type: 'line',
-      data: data,
+      data: {
+        labels: [], // Số lần khớp rule (x-axis)
+        datasets: [] // Số lần kích hoạt hành động (y-axis)
+      },
       options: {
         responsive: true,
-        animation: false, // Tắt animation để cập nhật mượt hơn
         scales: {
           x: {
             title: {
               display: true,
-              text: 'Time Points'
+              text: 'Number of Rule Matches'
             }
           },
           y: {
-            beginAtZero: true,
             title: {
               display: true,
-              text: 'Value'
+              text: 'Number of Actions Triggered'
             }
           }
         }
       }
     });
 
-    // Hàm cập nhật dữ liệu
-    function updateChart() {
-      // Thêm điểm dữ liệu ngẫu nhiên cho mỗi dataset
-      myChart.data.datasets.forEach(dataset => {
-        dataset.data.shift(); // Loại bỏ dữ liệu cũ nhất
-        dataset.data.push(Math.random() * 100); // Thêm dữ liệu mới
-      });
-
-      // Cập nhật biểu đồ
-      myChart.update();
+    // Hàm giả lập API (thay bằng API thật trong dự án của bạn)
+    async function fetchRuleData() {
+      // Dữ liệu mẫu: giả lập API trả về
+      return [
+        { rule: 'Rule 1', matches: Math.floor(Math.random() * 20), actions: Math.floor(Math.random() * 10) },
+        { rule: 'Rule 2', matches: Math.floor(Math.random() * 20), actions: Math.floor(Math.random() * 10) },
+        { rule: 'Rule 3', matches: Math.floor(Math.random() * 20), actions: Math.floor(Math.random() * 10) }
+      ];
     }
 
-    // Cập nhật biểu đồ mỗi 1 giây
-    setInterval(updateChart, 1000);
+    // Hàm cập nhật biểu đồ
+    async function updateChart() {
+      // Gọi API để lấy dữ liệu
+      const data = await fetchRuleData();
+
+      // Cập nhật trục hoành (số lần khớp rule)
+      const maxMatches = Math.max(...data.map(d => d.matches));
+      if (!ruleChart.data.labels.length || ruleChart.data.labels[ruleChart.data.labels.length - 1] !== maxMatches) {
+        ruleChart.data.labels.push(maxMatches);
+      }
+
+      // Cập nhật datasets cho từng rule
+      data.forEach((rule, index) => {
+        const dataset = ruleChart.data.datasets[index];
+
+        if (!dataset) {
+          // Nếu line cho rule chưa tồn tại, thêm mới
+          ruleChart.data.datasets.push({
+            label: rule.rule,
+            data: [rule.actions], // Dữ liệu y ban đầu
+            borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderWidth: 2
+          });
+        } else {
+          // Nếu line đã tồn tại, cập nhật data
+          dataset.data.push(rule.actions);
+        }
+      });
+
+      // Giới hạn số lượng nhãn và điểm dữ liệu (nếu cần)
+      if (ruleChart.data.labels.length > 20) {
+        ruleChart.data.labels.shift();
+        ruleChart.data.datasets.forEach(dataset => dataset.data.shift());
+      }
+
+      // Cập nhật biểu đồ
+      ruleChart.update();
+    }
+
+    // Gọi API và cập nhật biểu đồ định kỳ
+    setInterval(updateChart, 3000); // Gọi API mỗi 3 giây
   </script>
 </body>
 </html>

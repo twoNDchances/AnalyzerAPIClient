@@ -92,6 +92,7 @@ $(document).ready(function () {
                                 </tbody>
                             </table>
                         `)
+                        $('#progressStream').empty()
                         const responseData = JSON.parse(event.responseText)
                         for (let index = 0; index < responseData.data.length; index++) {
                             const element = responseData.data[index];
@@ -108,6 +109,13 @@ $(document).ready(function () {
                                         </button>
                                     </td>
                                 </tr>
+                            `)
+                            $('#progressStream').append(`
+                                <div class="progress mt-4">
+                                    <div class="progress-bar progress-bar-animated bg-danger progress-bar-striped" role="progressbar" style="width: ${element.match_count}%;">Match Count</div>
+                                    <div class="progress-bar progress-bar-animated bg-primary progress-bar-striped" role="progressbar" style="width: ${element.execution_count}%;">Execution Count</div>
+                                </div>
+                                <div class="text-center">${element.reference}</div>
                             `)
                         }
                     },

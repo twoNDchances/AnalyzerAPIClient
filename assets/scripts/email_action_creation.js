@@ -1,4 +1,4 @@
-import { callAPI, notificator, checker, convertFormToJSON } from './general.js';
+import { checker, notificator, callAPI } from './general.js'
 
 checker()
 
@@ -12,10 +12,11 @@ function updateJsonPreview() {
     $('#jsonPreview').text(jsonString)
 }
 
-$('#webhookActionCreationForm input, #webhookActionCreationForm textarea').on('input', updateJsonPreview)
+$('#emailActionCreationForm input, #emailActionCreationForm textarea').on('input', updateJsonPreview)
 
 $(document).ready(function () {
     updateJsonPreview()
+
     $('#actionCreationButton').on('click', function (event) {
         event.preventDefault()
         let isActionNameError = false;
@@ -40,7 +41,7 @@ $(document).ready(function () {
         
         callAPI(
             'POST',
-            '/api/actions/create/webhook',
+            '/api/actions/create/email',
             function () {
                 $('#actionCreationButton').empty().append(`
                     <div class="loader"></div>

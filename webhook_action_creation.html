@@ -101,6 +101,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="elasticsearch.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-server"> </i>
+                                Elasticsearch
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="configuration.html" class="nav-link">
                                 <i class="nav-link-icon pe-7s-config"> </i>
                                 Configuration Backend
@@ -243,9 +249,21 @@
                                             Webhook
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="email_action_creation.html">
+                                            <i class="metismenu-icon"></i>
+                                            Email
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="app-sidebar__heading">Setup</li>
+                            <li>
+                                <a href="elasticsearch.html">
+                                    <i class="metismenu-icon pe-7s-server"></i>
+                                    Elasticsearch
+                                </a>
+                            </li>
                             <li>
                                 <a href="configuration.html">
                                     <i class="metismenu-icon pe-7s-config"></i>
@@ -285,14 +303,21 @@
                                         </div>
                                         <div class="position-relative form-group">
                                             <label for="actionConfiguration" class="">Action Configuration</label>
-                                            <textarea rows="8" name="actionConfiguration" id="actionConfiguration" class="form-control">{
+                                            <pre><textarea rows="15" name="actionConfiguration" id="actionConfiguration" class="form-control">{
     "url": "http://localhost:8080",
     "type": "default",
     "body": {
         "message": "Just a demo of 'body' field"
     },
-    "method": "GET"
-}</textarea>
+    "method": "GET",
+    "connection_timeout": 2,
+    "data_read_timeout": 6,
+    "advanced": {
+        "is_enabled": false,
+        "threshold": 3,
+        "time_window_seconds": 30
+    }
+}</textarea></pre>
                                         </div>
                                         <div class="form-row">
                                             <div class="col-md-10"></div>

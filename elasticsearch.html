@@ -5,11 +5,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Elasticsearch</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
     <meta name="msapplication-tap-highlight" content="no">
-    <title>File Upload Rule Creation</title>
-
+    <!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/general.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -22,13 +33,33 @@
                 <div class="logo-src"></div>
                 <div class="header__pane ml-auto">
                     <div>
-                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                            data-class="closed-sidebar">
                             <span class="hamburger-box">
                                 <span class="hamburger-inner"></span>
                             </span>
                         </button>
                     </div>
                 </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button"
+                        class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
             </div>
             <div class="app-header__content">
                 <div class="app-header-left">
@@ -136,7 +167,7 @@
                                     Rule Results
                                 </a>
                             </li>
-                            <li class="mm-active">
+                            <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-plus"></i>
                                     Rule Creation
@@ -156,7 +187,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="fu_rule_creation.html" class="mm-active">
+                                        <a href="fu_rule_creation.html">
                                             <i class="metismenu-icon"></i>
                                             File Upload (FU)
                                         </a>
@@ -228,7 +259,7 @@
                             </li>
                             <li class="app-sidebar__heading">Setup</li>
                             <li>
-                                <a href="elasticsearch.html">
+                                <a href="elasticsearch.html" class="mm-active">
                                     <i class="metismenu-icon pe-7s-server"></i>
                                     Elasticsearch
                                 </a>
@@ -243,20 +274,24 @@
                     </div>
                 </div>
             </div>
-
             <div class="app-main__outer">
                 <div class="app-main__inner">
                     <div class="app-page-title">
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    <i class="pe-7s-file icon-gradient bg-ripe-malin"></i>
+                                    <i class="pe-7s-server icon-gradient bg-ripe-malin"></i>
                                 </div>
-                                <div>File Upload Rule Creation
+                                <div>Elasticsearch
                                     <div class="page-title-subheading">
-                                        Create your File Upload rule
+                                        Deploy and Reset Elasticsearch
                                     </div>
                                 </div>
+                            </div>
+                            <div class="page-title-actions">
+                                <button class="mb-2 mr-2 btn btn-warning active"  data-toggle="modal" data-target="#resetElasticsearchModal">
+                                    Reset Elasticsearch
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -264,87 +299,33 @@
                         <div class="col-md-6">
                             <div class="main-card mb-3 card">
                                 <div class="card-body">
-                                    <h1 class="card-title medium-header">File Upload Rule Creation Form</h1>
+                                    <h1 class="card-title medium-header">Resource Creation Form</h1>
                                     <hr>
-                                    <form id="fileUploadRuleCreationForm">
+                                    <form id="resourceCreationForm" enctype="multipart/form-data">
                                         <div class="form-row">
                                             <div class="col-md-6">
                                                 <div class="position-relative form-group">
-                                                    <label for="ruleName" class="">Rule Name</label>
-                                                    <input name="ruleName" id="ruleName" placeholder="Rule Name" type="text" class="form-control" autofocus>
-                                                    <div id="ruleNameErrorField"></div>
+                                                    <label for="loadResourceElasticsearchUsername" class="">Elasticsearch Username</label>
+                                                    <input name="loadResourceElasticsearchUsername" id="loadResourceElasticsearchUsername" placeholder="Elasticsearch Username" type="text" class="form-control" autofocus>
+                                                    <div id="loadResourceElasticsearchUsernameErrorField"></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="position-relative form-group">
-                                                    <label class="">Is Enabled</label>
-                                                    <fieldset class="position-relative form-group">
-                                                        <div class="position-relative form-check">
-                                                            <label class="form-check-label">
-                                                                <input name="isEnabled" type="radio" class="form-check-input" value="true">Yes (In case, create this rule and start to use it [Default])
-                                                            </label>
-                                                        </div>
-                                                        <div class="position-relative form-check">
-                                                            <label class="form-check-label">
-                                                                <input name="isEnabled" type="radio" class="form-check-input" value="false">No (In case, create but it just recieve request and not do anything)
-                                                            </label>
-                                                        </div>
-                                                    </fieldset>
+                                                    <label for="loadResourceElasticsearchPassword" class="">Elasticsearch Password</label>
+                                                    <input name="loadResourceElasticsearchPassword" id="loadResourceElasticsearchPassword" placeholder="Elasticsearch Password" type="password" class="form-control">
+                                                    <div id="loadResourceElasticsearchPasswordErrorField"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="position-relative form-group">
-                                            <label for="targetField" class="">Target Field</label>
-                                            <textarea rows="4" name="targetField" id="targetField" class="form-control" placeholder="Example: request.body"></textarea>
-                                            <div id="targetFieldErrorField"></div>
+                                            <label for="resourceDefinition" class="">Resource Definition</label>
+                                            <pre></pri><textarea name="resourceDefinition" id="resourceDefinition" class="form-control" placeholder="Resource Definition" rows="50"></textarea></pre>
                                         </div>
-                                        <div class="position-relative form-group">
-                                            <label for="ipRootCauseField" class="">IP Root Cause Field</label>
-                                            <textarea rows="2" name="ipRootCauseField" id="ipRootCauseField" class="form-control" placeholder="Example: client.ip"></textarea>
-                                            <div id="ipRootCauseFieldErrorField"></div>
-                                        </div>
-                                        <div class="position-relative form-group">
-                                            <label for="regexMatcher" class="">Regex Matcher</label>
-                                            <textarea rows="2" name="regexMatcher" id="regexMatcher" class="form-control" placeholder="Example: \b(exec|eval|passthru)\b"></textarea>
-                                                <div id="regexMatcherErrorField"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="position-relative form-group">
-                                                    <label for="ruleLibrary" class="">Rule Library (First Step)</label>
-                                                    <div id="ruleLibraryField"></div>
-                                                    <div id="ruleLibraryErrorField"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="position-relative form-group">
-                                                    <p>Intergration Rules (Second Step: Optional)</p>
-                                                    <div>
-                                                        <div class="custom-checkbox custom-control custom-control-inline">
-                                                            <input type="checkbox" name="yaraRuleIntergration" id="yaraRuleIntergration" class="custom-control-input" value="YARA">
-                                                            <label class="custom-control-label" for="yaraRuleIntergration">YARA</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="position-relative form-group">
-                                            <label for="action" class="">Action</label>
-                                            <div id="actionField">
-                                                <select name="action" id="action" class="form-control">
-                                                    <option value="not_used">Not Used</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-md-10"></div>
-                                            <div class="col-md-2">
-                                                <button class="mb-2 mr-2 btn btn-primary btn-block" id="fileUploadRuleCreationButton">
-                                                    Create
-                                                </button>
-                                            </div>
+                                        <div class="text-right">
+                                            <button class="mb-2 mr-2 btn btn-primary" id="resourceCreationButton">
+                                                Load Resource
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -352,9 +333,78 @@
                         </div>
                         <div class="col-md-6">
                             <div class="main-card mb-3 card">
-                                <div class="card-body">
-                                    <h1 class="card-title medium-header">JSON Preview</h1>
-                                    <pre id="jsonPreview" class="clear-text">{}</pre>
+                                <div class="card-body"><h1 class="card-title medium-header">JSON Results</h1>
+                                    <hr>
+                                    <pre id="jsonResults" class="clear-text">{
+    "actions": {
+        "datatype": null,
+        "fields": [],
+        "validations": {
+            "action_name": [],
+            "action_type": [],
+            "action_configuration": []
+        },
+        "passed": []
+    },
+    "fus": {
+        "datatype": null,
+        "fields": [],
+        "validations": {
+            "rule_name": [],
+            "target_field": [],
+            "ip_root_cause_field": [],
+            "regex_matcher": [],
+            "rule_library": [],
+            "yara_rule_intergration": [],
+            "action": []
+        },
+        "passed": []
+    },
+    "rules": {
+        "datatype": null,
+        "fields": [],
+        "validations": {
+            "rule_type": [],
+            "includes": [],
+            "definitions": []
+        },
+        "passed": []
+    },
+    "sqlis": {
+        "datatype": null,
+        "fields": [],
+        "validations": {
+            "rule_name": [],
+            "target_field": [],
+            "ip_root_cause_field": [],
+            "regex_matcher": [],
+            "rule_library": [],
+            "action": []
+        },
+        "passed": []
+    },
+    "xsss": {
+        "datatype": null,
+        "fields": [],
+        "validations": {
+            "rule_name": [],
+            "target_field": [],
+            "ip_root_cause_field": [],
+            "regex_matcher": [],
+            "rule_library": [],
+            "action": []
+        },
+        "passed": []
+    },
+    "yaras": {
+        "datatype": null,
+        "fields": [],
+        "validations": {
+            "yara_rule": []
+        },
+        "passed": []
+    }
+}</pre>
                                 </div>
                             </div>
                         </div>
@@ -363,11 +413,41 @@
             </div>
         </div>
     </div>
-
     <script type="text/javascript" src="./assets/scripts/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="module" src="./assets/scripts/fu_rule_creation.js"></script>
+    <script type="module" src="./assets/scripts/elasticsearch.js"></script>
 </body>
 
 </html>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="resetElasticsearchModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Authentication Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="authenticationForm">
+                    <div class="position-relative form-group">
+                        <label for="elasticsearchUsername" class="">Elasticsearch Username</label>
+                        <input name="elasticsearchUsername" id="elasticsearchUsername" placeholder="Elasticsearch Username" type="text" class="form-control" autofocus>
+                        <div id="elasticsearchUsernameErrorField"></div>
+                    </div>
+                    <div class="position-relative form-group">
+                        <label for="elasticsearchPassword" class="">Elasticsearch Password</label>
+                        <input name="elasticsearchPassword" id="elasticsearchPassword" placeholder="Elasticsearch Password" type="password" class="form-control">
+                        <div id="elasticsearchPasswordErrorField"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="resetElasticsearchModalCloseButton">Close</button>
+                <button type="button" class="btn btn-warning" id="resetElasticsearchButton">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>

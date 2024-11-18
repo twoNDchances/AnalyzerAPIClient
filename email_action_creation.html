@@ -5,11 +5,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Email Action Creation</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
     <meta name="msapplication-tap-highlight" content="no">
-    <title>File Upload Rule Creation</title>
-
+    <!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/general.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -22,13 +33,33 @@
                 <div class="logo-src"></div>
                 <div class="header__pane ml-auto">
                     <div>
-                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                            data-class="closed-sidebar">
                             <span class="hamburger-box">
                                 <span class="hamburger-inner"></span>
                             </span>
                         </button>
                     </div>
                 </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button"
+                        class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
             </div>
             <div class="app-header__content">
                 <div class="app-header-left">
@@ -136,8 +167,8 @@
                                     Rule Results
                                 </a>
                             </li>
-                            <li class="mm-active">
-                                <a href="#">
+                            <li>
+                                <a href="#" aria-expanded="true">
                                     <i class="metismenu-icon pe-7s-plus"></i>
                                     Rule Creation
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -156,7 +187,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="fu_rule_creation.html" class="mm-active">
+                                        <a href="fu_rule_creation.html">
                                             <i class="metismenu-icon"></i>
                                             File Upload (FU)
                                         </a>
@@ -205,7 +236,7 @@
                                     Action Management
                                 </a>
                             </li>
-                            <li>
+                            <li class="mm-active">
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-rocket"></i>
                                     Action Initiation
@@ -219,7 +250,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="email_action_creation.html">
+                                        <a href="email_action_creation.html" class="mm-active">
                                             <i class="metismenu-icon"></i>
                                             Email
                                         </a>
@@ -243,18 +274,17 @@
                     </div>
                 </div>
             </div>
-
             <div class="app-main__outer">
                 <div class="app-main__inner">
                     <div class="app-page-title">
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    <i class="pe-7s-file icon-gradient bg-ripe-malin"></i>
+                                    <i class="pe-7s-mail icon-gradient bg-ripe-malin"></i>
                                 </div>
-                                <div>File Upload Rule Creation
+                                <div>Email Action Creation
                                     <div class="page-title-subheading">
-                                        Create your File Upload rule
+                                        Create your Email to perform action
                                     </div>
                                 </div>
                             </div>
@@ -263,85 +293,40 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="main-card mb-3 card">
-                                <div class="card-body">
-                                    <h1 class="card-title medium-header">File Upload Rule Creation Form</h1>
+                                <div class="card-body"><h1 class="card-title medium-header">Email Action Creation Form</h1>
                                     <hr>
-                                    <form id="fileUploadRuleCreationForm">
-                                        <div class="form-row">
-                                            <div class="col-md-6">
-                                                <div class="position-relative form-group">
-                                                    <label for="ruleName" class="">Rule Name</label>
-                                                    <input name="ruleName" id="ruleName" placeholder="Rule Name" type="text" class="form-control" autofocus>
-                                                    <div id="ruleNameErrorField"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="position-relative form-group">
-                                                    <label class="">Is Enabled</label>
-                                                    <fieldset class="position-relative form-group">
-                                                        <div class="position-relative form-check">
-                                                            <label class="form-check-label">
-                                                                <input name="isEnabled" type="radio" class="form-check-input" value="true">Yes (In case, create this rule and start to use it [Default])
-                                                            </label>
-                                                        </div>
-                                                        <div class="position-relative form-check">
-                                                            <label class="form-check-label">
-                                                                <input name="isEnabled" type="radio" class="form-check-input" value="false">No (In case, create but it just recieve request and not do anything)
-                                                            </label>
-                                                        </div>
-                                                    </fieldset>
-                                                </div>
-                                            </div>
+                                    <form id="emailActionCreationForm">
+                                        <div class="position-relative form-group">
+                                            <label for="actionName" class="">Action Name</label>
+                                            <input name="actionName" id="actionName" placeholder="Action Name" type="text" class="form-control" autofocus>
+                                            <div id="actionNameErrorField"></div>
                                         </div>
                                         <div class="position-relative form-group">
-                                            <label for="targetField" class="">Target Field</label>
-                                            <textarea rows="4" name="targetField" id="targetField" class="form-control" placeholder="Example: request.body"></textarea>
-                                            <div id="targetFieldErrorField"></div>
-                                        </div>
-                                        <div class="position-relative form-group">
-                                            <label for="ipRootCauseField" class="">IP Root Cause Field</label>
-                                            <textarea rows="2" name="ipRootCauseField" id="ipRootCauseField" class="form-control" placeholder="Example: client.ip"></textarea>
-                                            <div id="ipRootCauseFieldErrorField"></div>
-                                        </div>
-                                        <div class="position-relative form-group">
-                                            <label for="regexMatcher" class="">Regex Matcher</label>
-                                            <textarea rows="2" name="regexMatcher" id="regexMatcher" class="form-control" placeholder="Example: \b(exec|eval|passthru)\b"></textarea>
-                                                <div id="regexMatcherErrorField"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="position-relative form-group">
-                                                    <label for="ruleLibrary" class="">Rule Library (First Step)</label>
-                                                    <div id="ruleLibraryField"></div>
-                                                    <div id="ruleLibraryErrorField"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="position-relative form-group">
-                                                    <p>Intergration Rules (Second Step: Optional)</p>
-                                                    <div>
-                                                        <div class="custom-checkbox custom-control custom-control-inline">
-                                                            <input type="checkbox" name="yaraRuleIntergration" id="yaraRuleIntergration" class="custom-control-input" value="YARA">
-                                                            <label class="custom-control-label" for="yaraRuleIntergration">YARA</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="position-relative form-group">
-                                            <label for="action" class="">Action</label>
-                                            <div id="actionField">
-                                                <select name="action" id="action" class="form-control">
-                                                    <option value="not_used">Not Used</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                </select>
-                                            </div>
+                                            <label for="actionConfiguration" class="">Action Configuration</label>
+                                            <pre><textarea rows="19" name="actionConfiguration" id="actionConfiguration" class="form-control">{
+    "to": "recipient@example.com",
+    "subject": "Action Email Notification",
+    "type": "default",
+    "body": {
+        "message": "Just a demo"
+    },
+    "smtp": {
+        "host": "smtp.gmail.com",
+        "port": 587,
+        "username": "your_username",
+        "password": "your_password"
+    },
+    "advanced": {
+        "is_enabled": false,
+        "threshold": 3,
+        "time_window_seconds": 30
+    }
+}</textarea></pre>
                                         </div>
                                         <div class="form-row">
                                             <div class="col-md-10"></div>
                                             <div class="col-md-2">
-                                                <button class="mb-2 mr-2 btn btn-primary btn-block" id="fileUploadRuleCreationButton">
+                                                <button class="mb-2 mr-2 btn btn-primary btn-block" id="actionCreationButton">
                                                     Create
                                                 </button>
                                             </div>
@@ -352,8 +337,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="main-card mb-3 card">
-                                <div class="card-body">
-                                    <h1 class="card-title medium-header">JSON Preview</h1>
+                                <div class="card-body"><h1 class="card-title medium-header">JSON Preview</h1>
                                     <pre id="jsonPreview" class="clear-text">{}</pre>
                                 </div>
                             </div>
@@ -363,11 +347,10 @@
             </div>
         </div>
     </div>
-
     <script type="text/javascript" src="./assets/scripts/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="module" src="./assets/scripts/fu_rule_creation.js"></script>
+    <script type="module" src="./assets/scripts/email_action_creation.js"></script>
 </body>
 
 </html>
