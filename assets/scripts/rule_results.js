@@ -63,7 +63,7 @@ $(document).ready(function () {
                         <td class="text-danger"><strong>${element.match_count}</strong></td>
                         <td class="text-primary"><strong>${element.execution_count}</strong></td>
                         <td>
-                            <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#resultLogsModal" data-id="${element.id}" onclick=getResultLogs(this)>
+                            <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#resultLogsModal" data-rule-name="${element.reference}" data-type="${String(element.analyzer).toLowerCase()}" onclick=getResultLogs(this)>
                                 <i class="fa fa-eye"></i>
                             </button>
                         </td>
@@ -104,7 +104,7 @@ $(document).ready(function () {
                                     <td class="text-danger"><strong>${element.match_count}</strong></td>
                                     <td class="text-primary"><strong>${element.execution_count}</strong></td>
                                     <td>
-                                        <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#resultLogsModal" data-id="${element.id}" onclick=getResultLogs(this)>
+                                        <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#resultLogsModal" data-rule-name="${element.reference}" data-type="${String(element.analyzer).toLowerCase()}" onclick=getResultLogs(this)>
                                             <i class="fa fa-eye"></i>
                                         </button>
                                     </td>
@@ -142,4 +142,31 @@ $(document).ready(function () {
             }
         }
     )
+
+    $('#emptyButton').on('click', function () {
+        const ruleName = document.getElementById('emptyButton').getAttribute('data-rule-name')
+        const type = document.getElementById('emptyButton').getAttribute('data-type')
+        callAPI(
+            'DELETE',
+            `/api/results/empty-errorlogs/${ruleName}?type=${type}`,
+            function () {
+                $('#emptyButton').empty().append(`
+                    <div class="loader"></div>
+                `).attr('disabled', true)
+            },
+            function () {
+                $('#emptyButton').empty().text('Empty Logs').removeAttr('disabled')
+                $('#resultLogsModalBody').empty().append(`
+                    <div class="item-center">
+                        Empty
+                    </div>
+                `)
+            },
+            function (error) {
+                $('#emptyButton').empty().text('Empty Logs').removeAttr('disabled')
+                const responseError = JSON.parse(error.responseText)
+                notificator('Error', responseError.reason, 'error')
+            }
+        )
+    })
 })

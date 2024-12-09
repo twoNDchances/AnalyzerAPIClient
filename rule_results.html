@@ -323,11 +323,13 @@
     <script type="module" src="./assets/scripts/rule_results.js"></script>
     <script>
         function getResultLogs(get) {
-            const id = get.getAttribute('data-id')
-            $('#resultLogsModalTitle').empty().text(`Result Log ID: #${id}`)
+            const ruleName = get.getAttribute('data-rule-name')
+            const type = get.getAttribute('data-type')
+            $('#emptyButton').attr('data-rule-name', ruleName).attr('data-type', type)
+            $('#resultLogsModalTitle').empty().text(`Result Log ID: #${ruleName}`)
             callAPI(
                 'GET',
-                '/api/results/show/' + id,
+                `/api/results/show/${ruleName}?type=${type}`,
                 function () {
                     $('#resultLogsModalBody').empty().append(`
                         <div class="small-item-center">
@@ -338,17 +340,26 @@
                 function (event) {
                     const responseData = JSON.parse(event.responseText)
                     $('#resultLogsModalBody').empty().append(`
-                        <pre class="clear-text">${JSON.stringify(JSON.parse(responseData.data.logs), null, 4)}</pre>
+                        <pre class="clear-text">${JSON.stringify(responseData.data, null, 4)}</pre>
                     `)
                 },
                 function (event) {
-                    $('#resultLogsModalBody').empty().append(`
-                        <div class="small-item-center">
-                            Error
-                        </div>
-                    `)
-                    const responseError = JSON.parse(event.responseText)
-                    notificator('Error', responseError.reason, 'error')
+                    if (event.status == 404) {
+                        $('#resultLogsModalBody').empty().append(`
+                            <div class="item-center">
+                                Empty
+                            </div>
+                        `)
+                    }
+                    else {
+                        $('#resultLogsModalBody').empty().append(`
+                            <div class="small-item-center">
+                                Error
+                            </div>
+                        `)
+                        const responseError = JSON.parse(event.responseText)
+                        notificator('Error', responseError.reason, 'error')
+                    }
                 }
             )
         }
@@ -428,6 +439,10 @@
                 </button>
             </div>
             <div class="modal-body" id="resultLogsModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="resultLogsModalCloseButton">Close</button>
+                <button type="button" class="btn btn-danger" id="emptyButton">Empty Logs</button>
+            </div>
         </div>
     </div>
 </div>
