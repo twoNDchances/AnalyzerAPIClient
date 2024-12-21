@@ -27,6 +27,7 @@ $(document).ready(function () {
                             <th>IP Root Cause Field</th>
                             <th>Regex Matcher</th>
                             <th>Rule Library</th>
+                            <th>Wordlist</th>
                             <th>Action</th>
                             <th>View Details</th>
                             <th>Remove</th>
@@ -47,6 +48,7 @@ $(document).ready(function () {
                         <td>${element.ip_root_cause_field}</td>
                         <td>${element.regex_matcher}</td>
                         <td>${element.rule_library}</td>
+                        <td>${element.wordlist}</td>
                         <td>${element.action_id}</td>
                         <td>
                             <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#ruleDetailsModal" data-id="${element.id}" onclick=getSQLIRuleDetails(this)>
@@ -302,6 +304,7 @@ $(document).ready(function () {
                         <td>${responseData.data.ip_root_cause_field}</td>
                         <td>${responseData.data.regex_matcher}</td>
                         <td>${responseData.data.rule_library}</td>
+                        <td>${responseData.data.wordlist}</td>
                         <td>${responseData.data.action}</td>
                         <td>
                             <button class="mb-2 mr-2 btn btn-light" data-toggle="modal" data-target="#ruleDetailsModal" data-id="${responseData.data.id}" onclick=getSQLIRuleDetails(this)>

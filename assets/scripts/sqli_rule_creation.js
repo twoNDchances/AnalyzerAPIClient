@@ -10,6 +10,7 @@ function updateJsonPreview() {
         ip_root_cause_field: $('#ipRootCauseField').val(),
         regex_matcher: $('#regexMatcher').val(),
         rule_library: $('#ruleLibrary').val(),
+        wordlist: $('#wordlist').val(),
         action: $('#action').val(),
     }
 
@@ -50,6 +51,40 @@ $(document).ready(function () {
             notificator('Error', 'Can\'t fetch Rule Library!', 'error')
             $('#ruleLibraryField').empty().append(`
                 <select name="ruleLibrary" id="ruleLibrary" class="form-control">
+                    <option value="not_used">Not Used</option>
+                </select>
+            `)
+        }
+    )
+
+    fetchData(
+        '/api/wordlists/list-names',
+        'GET',
+        null,
+        function () {
+            $('#wordlistField').empty().append(`
+                <div class="loader"></div>
+            `)
+        },
+        function (data) {
+            $('#wordlistField').empty().append(`
+                <select name="wordlist" id="wordlist" class="form-control">
+                    <option value="not_used">Not Used</option>
+                </select>
+            `)
+            for (let index = 0; index < data.data.length; index++) {
+                const element = data.data[index];
+                $('#wordlist').append(`<option value="${element}">${element}</option>`)
+                updateJsonPreview()
+                $('#wordlist').on('change', function () {
+                    updateJsonPreview()
+                })
+            }
+        },
+        function () {
+            notificator('Error', 'Can\'t fetch Wordlist!', 'error')
+            $('#wordlistField').empty().append(`
+                <select name="wordlist" id="wordlist" class="form-control">
                     <option value="not_used">Not Used</option>
                 </select>
             `)

@@ -162,8 +162,7 @@ $(document).ready(function () {
             })
         },
         function (status, errorMessage) {
-            console.log(errorMessage);
-            
+            console.log(errorMessage);            
             if (status == 404) {
                 $('#actionManagementOfWebhook').empty().append(`
                     <div class="item-center">

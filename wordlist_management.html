@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Rule Inheritance</title>
+    <title>Wordlist Creation</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
@@ -196,7 +196,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="rule_inheritance.html" class="mm-active">
+                                <a href="rule_inheritance.html">
                                     <i class="metismenu-icon pe-7s-shuffle"></i>
                                     Rule Inheritance
                                 </a>
@@ -225,7 +225,7 @@
                             </li>
                             <li class="app-sidebar__heading">Inside</li>
                             <li>
-                                <a href="wordlist_management.html">
+                                <a href="wordlist_management.html" class="mm-active">
                                     <i class="metismenu-icon pe-7s-notebook"></i>
                                     Wordlist Management
                                 </a>
@@ -287,54 +287,19 @@
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    <i class="pe-7s-shuffle icon-gradient bg-ripe-malin"></i>
+                                    <i class="pe-7s-notebook icon-gradient bg-ripe-malin"></i>
                                 </div>
-                                <div>Rule Inheritance
+                                <div>Wordlist Management
                                     <div class="page-title-subheading">
-                                        Create and Extend Rule Library
+                                        Manage all of your Wordlist
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <h1 class="card-title medium-header">Rule Inheritance Form</h1>
-                            <hr>
-                            <form id="ruleInheritanceForm">
-                                <div class="form-row">
-                                    <div class="col-md-2">
-                                        <div class="position-relative form-group">
-                                            <label for="ruleType" class="">Rule Type</label>
-                                            <input name="ruleType" id="ruleType" placeholder="Example: my-library-1" type="text" class="form-control">
-                                        </div>
-                                        <p>Rule Library</p>
-                                        <div class="position-relative form-group">
-                                            <div id="ruleLibraryField"></div>
-                                        </div>
-                                        <button class="mt-4 btn btn-lg btn-primary" id="ruleInheritanceCreationButton">
-                                            Create
-                                        </button>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <div id="ruleExecutionAndRuleDescription">
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10"></div>
-                                            <div class="col-md-2 text-right">
-                                                <button class="btn btn-light" type="button" id="addFieldButton">Add field</button>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="form-row mt-4">
-                                    <div class="col-md-10"></div>
-                                    <div class="col-md-2 text-right">
-                                        
-                                    </div>
-                                </div>
-                            </form>
+                    <div class="main-card mb-3 card" id="cardOfWordlist">
+                        <div class="card-body"><h1 class="card-title medium-header">Wordlist</h1>
+                            <div id="wordlistManagement" class="table-responsive"></div>
                         </div>
                     </div>
                 </div>
@@ -344,7 +309,216 @@
     <script type="text/javascript" src="./assets/scripts/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="module" src="./assets/scripts/rule_inheritance.js" defer></script>
+    <script type="module" src="./assets/scripts/wordlist_management.js"></script>
+    <script>
+        function deleteWordlist(get) {
+            const wordlistName = get.getAttribute('data-wordlist-name')
+            $('#wordlistDeleteModalTitle').text(`Delete: ${wordlistName}`)
+            $('#deleteButton').attr('data-wordlist-name', wordlistName)
+            callAPI(
+                'GET',
+                '/api/wordlists/list-related/' + wordlistName,
+                function () {
+                    $('#wordlistRelatedDeleteModalBody').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `)
+                },
+                function (data) {
+                    $('#wordlistRelatedDeleteModalBody').empty().append(`
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>SQLI Related</strong></h6>
+                                <ul id="sqliRelated"></ul>
+                            </div>
+                        </div>
+                    `)
+                    const responseData = JSON.parse(data.responseText)
+                    for (let index = 0; index < responseData.data.length; index++) {
+                        const element = responseData.data[index];
+                        $('#sqliRelated').append(`
+                            <li>${element}</li>
+                        `)
+                    }
+                },
+                function (error) {
+                    $('#wordlistRelatedDeleteModalBody').empty().append(`
+                    `)
+                }
+            )
+        }
+
+        function getWordlistDetails(get) {
+            const wordlistName = get.getAttribute('data-wordlist-name')
+            $('#wordlistDetailsModalTitle').text(`Wordlist Name: ${wordlistName}`)
+            $('#updateButton').attr('data-wordlist-name', wordlistName)
+            callAPI(
+                'GET',
+                '/api/wordlists/show/' + wordlistName,
+                function () {
+                    $('#wordlistName').attr('disabled', true)
+                    $('#content').attr('disabled', true)
+                    $('#updateButton').empty().append(`
+                        <div class="small-item-center">
+                            <div class="loader"></div>
+                        </div>
+                    `).attr('disabled', true)
+                },
+                function (data) {
+                    $('#wordlistName').removeAttr('disabled')
+                    $('#content').removeAttr('disabled')
+                    $('#updateButton').empty().text('Update').removeAttr('disabled')
+                    const responseData = JSON.parse(data.responseText)
+                    $('#wordlistName').val(responseData.data.wordlist_name)
+                    let content = ''
+                    for (let index = 0; index < responseData.data.content.length; index++) {
+                        const element = responseData.data.content[index];
+                        if (index == responseData.data.content.length - 1) {
+                            content = content + element
+                        }
+                        else {
+                            content = content + element + '\n'
+                        }
+                    }
+                    $('#content').val(content)
+                    $('#wordlistRelatedModalBody').empty().append(`
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-center"><strong>SQLI Related</strong></h6>
+                                <ul id="sqliRelatedWordlist"></ul>
+                            </div>
+                        </div>
+                    `)
+                    for (let index = 0; index < responseData.data.related.length; index++) {
+                        const element = responseData.data.related[index];
+                        $('#sqliRelatedWordlist').append(`
+                            <li>${element}</li>
+                        `)
+                    }
+                },
+                function (error) {
+                    $('#wordlistName').removeAttr('disabled')
+                    $('#content').removeAttr('disabled')
+                    $('#updateButton').empty().text('Update').removeAttr('disabled')
+                    notificator('Error', error.responseText, 'error')
+                }
+            )
+        }
+
+        function callAPI(method, endpoint, onLoading, onSuccess, onError, body = null) {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 0 || this.readyState == 1 || this.readyState == 2 || this.readyState == 3) {
+                    onLoading()
+                }
+                else if (this.readyState == 4 && this.status == 200) {
+                    onSuccess(this)
+                }
+                else if (this.status != 200) {
+                    onError(this)
+                }
+            }
+            xhr.open(method, getCookie('backendAPI') + endpoint);
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            if (body == null) {
+                xhr.send();
+            }
+            else {
+                xhr.send(body);
+            }
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "="
+            const cookiesArray = document.cookie.split(';')
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i]
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1, cookie.length)
+                }
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length))
+                }
+            }
+            return null;
+        }
+
+        function notificator(title, message, type) {
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.options.timeOut = 5000;
+            toastr.options.showMethod = 'slideDown';
+            toastr.options.hideMethod = 'slideUp';
+            toastr.options.preventDuplicates = true;
+            if (type == 'info') {
+                toastr.info(message, title);
+            }
+            if (type == 'success') {
+                toastr.success(message, title);
+            }
+            if (type == 'warning') {
+                toastr.warning(message, title);
+            }
+            if (type == 'error') {
+                toastr.error(message, title);
+            }
+        }
+    </script>
 </body>
 
 </html>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="wordlistDetailsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="wordlistDetailsModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="wordlistCreationForm">
+                    <div class="position-relative form-group">
+                        <label for="wordlistName" class="">Wordlist Name</label>
+                        <input name="wordlistName" id="wordlistName" placeholder="Wordlist Name" type="text" class="form-control">
+                        <div id="wordlistNameErrorField"></div>
+                    </div>
+                    <div class="position-relative form-group">
+                        <label for="content" class="">Content</label>
+                        <textarea rows="4" name="content" id="content" class="form-control" placeholder="Example: abc\ndef"></textarea>
+                        <div id="contentErrorField"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-body" id="wordlistRelatedModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="wordlistDetailsModalCloseButton">Close</button>
+                <button type="button" class="btn btn-primary" id="updateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="wordlistDeleteModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="wordlistDeleteModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                If you really want to delete this wordlist, the related rules listed below will switch to "Not Used".
+                <div class="modal-body" id="wordlistRelatedDeleteModalBody"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="wordlistDeleteModalCloseButton">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

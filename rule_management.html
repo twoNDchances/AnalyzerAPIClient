@@ -71,27 +71,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="rule_results.html" class="nav-link">
-                                <i class="nav-link-icon pe-7s-news-paper"> </i>
-                                Rule Results
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="rule_library.html" class="nav-link">
                                 <i class="nav-link-icon pe-7s-box2"> </i>
                                 Rule Library
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="rule_inheritance.html" class="nav-link">
-                                <i class="nav-link-icon pe-7s-shuffle"> </i>
-                                Rule Inheritance
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="intergration_management.html" class="nav-link">
                                 <i class="nav-link-icon pe-7s-share"> </i>
                                 Intergration Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="wordlist_management.html" class="nav-link">
+                                <i class="nav-link-icon pe-7s-notebook"> </i>
+                                Wordlist Management
                             </a>
                         </li>
                         <li class="nav-item">
@@ -228,6 +222,19 @@
                                         </a>
                                     </li>
                                 </ul>
+                            </li>
+                            <li class="app-sidebar__heading">Inside</li>
+                            <li>
+                                <a href="wordlist_management.html">
+                                    <i class="metismenu-icon pe-7s-notebook"></i>
+                                    Wordlist Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="wordlist_creation.html">
+                                    <i class="metismenu-icon pe-7s-note"></i>
+                                    Wordlist Creation
+                                </a>
                             </li>
                             <li class="app-sidebar__heading">Target</li>
                             <li>
@@ -392,11 +399,21 @@
                                 <textarea rows="2" name="regexMatcher" id="regexMatcher" class="form-control" placeholder="Example: (?i)\b(OR|AND)\s+\d+=\d+">${responseText.data.regex_matcher}</textarea>
                                 <div id="regexMatcherErrorField"></div>
                             </div>
-                            <div class="position-relative form-group">
-                                <label for="ruleLibrary" class="">Rule Library</label>
-                                <div id="ruleLibraryField">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="ruleLibrary" class="">Rule Library</label>
+                                        <div id="ruleLibraryField"></div>
+                                        <div id="ruleLibraryErrorField"></div>
+                                    </div>
                                 </div>
-                                <div id="ruleLibraryErrorField"></div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="wordlist" class="">Wordlist</label>
+                                        <div id="wordlistField"></div>
+                                        <div id="wordlistErrorField"></div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="position-relative form-group">
                                 <label for="action" class="">Action</label>
@@ -415,15 +432,24 @@
                         <select name="ruleLibrary" id="ruleLibrary" class="form-control">
                         </select>
                     `)
+                    $('#wordlistField').empty().append(`
+                        <select name="wordlist" id="wordlist" class="form-control">
+                        </select>
+                    `)
                     $('#actionField').empty().append(`
                         <select name="action" id="action" class="form-control">
                         </select>
                     `)
                     let ruleLibrary = ['not_used']
+                    let wordlist = ['not_used']
                     let action = ['not_used']
                     for (let index = 0; index < responseText.data.rule_library.rules.length; index++) {
                         const element = responseText.data.rule_library.rules[index];
                         ruleLibrary.push(element)
+                    }
+                    for (let index = 0; index < responseText.data.wordlist.wordlists.length; index++) {
+                        const element = responseText.data.wordlist.wordlists[index];
+                        wordlist.push(element)
                     }
                     for (let index = 0; index < responseText.data.action_id.actions.length; index++) {
                         const element = responseText.data.action_id.actions[index];
@@ -438,6 +464,19 @@
                         }
                         else {
                             $('#ruleLibrary').append(`
+                                <option value="${element}">${element}</option>
+                            `)
+                        }
+                    }
+                    for (let index = 0; index < wordlist.length; index++) {
+                        const element = wordlist[index];
+                        if (element == responseText.data.wordlist.choice) {
+                            $('#wordlist').append(`
+                                <option value="${element}" selected>${element}</option>
+                            `)
+                        }
+                        else {
+                            $('#wordlist').append(`
                                 <option value="${element}">${element}</option>
                             `)
                         }
